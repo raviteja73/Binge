@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>Womens Health Project</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css">
+
+    <!-- Bootstrap core CSS -->
+    <link href="views/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Material Design Bootstrap -->
+    <link href="views/css/mdb.min.css" rel="stylesheet">
+
+    <!-- Template styles -->
+    <style rel="stylesheet">
+        /* TEMPLATE STYLES */
+        /* Necessary for full page carousel*/
+
+        html,
+        body,
+        .view {
+            height: 100%;
+        }
+        /* Navigation*/
+
+        .navbar {
+            background-color: transparent;
+        }
+
+        .scrolling-navbar {
+            -webkit-transition: background .5s ease-in-out, padding .5s ease-in-out;
+            -moz-transition: background .5s ease-in-out, padding .5s ease-in-out;
+            transition: background .5s ease-in-out, padding .5s ease-in-out;
+        }
+
+        .top-nav-collapse {
+            background-color: #1C2331;
+        }
+
+        footer.page-footer {
+            background-color: #1C2331;
+            margin-top: 0;
+        }
+
+        @media only screen and (max-width: 768px) {
+            .navbar {
+                background-color: #1C2331;
+            }
+        }
+        /* Carousel*/
+
+        .carousel,
+        .carousel-item,
+        .active {
+            height: 100%;
+        }
+
+        .carousel-inner {
+            height: 100%;
+        }
+
+        .carousel-item:nth-child(1) {
+            background-image: url("http://il9.picdn.net/shutterstock/videos/9535481/thumb/10.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .carousel-item:nth-child(2) {
+            background-image: url("http://mdbootstrap.com/images/regular/nature/img%20(4).jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .carousel-item:nth-child(3) {
+            background-image: url("http://mdbootstrap.com/images/regular/nature/img%20(3).jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        /*Caption*/
+
+        .flex-center {
+            color: #fff;
+        }
+
+        @media (min-width: 776px) {
+            .carousel .view ul li {
+                display: inline;
+            }
+            .carousel .view .full-bg-img ul li .flex-item {
+                margin-bottom: 1.5rem;
+            }
+        }
+        .form-inline li{
+            display: inline-block;
+        }
+        .loginButtons{
+            border-radius:5px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+<!--Navbar-->
+<nav class="navbar navbar-dark navbar-fixed-top scrolling-navbar">
+
+    <!-- Collapse button-->
+    <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#collapseEx">
+        <i class="fa fa-bars"></i>
+    </button>
+
+    <div class="container">
+
+        <!--Collapse content-->
+        <div class="collapse navbar-toggleable-xs" id="collapseEx">
+            <!--Navbar Brand-->
+            <a class="navbar-brand" href="" target="_blank">WHP</a>
+            <form class="form-inline" action="/user/validateUser" method="post">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="username" placeholder="Username">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="password" placeholder="Password">
+                </div>
+                <button type="submit" class="btn btn-default">Sign In</button>
+            </form>
+        </div>
+    </div>
+
+</nav>
+<!--/.Navbar-->
+
+<!--Carousel Wrapper-->
+<div id="carousel-example-1" class="carousel slide carousel-fade" data-ride="carousel" data-interval="false">
+    <!--Slides-->
+    <div class="carousel-inner" role="listbox">
+
+        <!--First slide-->
+        <div class="carousel-item active">
+            <!--Mask-->
+            <div class="view hm-black-light">
+                <div class="full-bg-img flex-center">
+                    <ul class="animated fadeInUp col-md-12">
+                        <li>
+                            <h1 class="h1-responsive flex-item">Womens Health Project</h1>
+                        <li>
+                            <p class="flex-item">Improving womens health</p>
+                        </li>
+                        <li>
+                            <a target="_blank" href="http://localhost/binge/about.html" class="btn btn-default btn-lg flex-item">Learn more</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- SCRIPTS -->
+
+<!-- JQuery -->
+<script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>
+
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="js/tether.min.js"></script>
+
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="js/mdb.min.js"></script>
+
+
+</body>
+
+</html>

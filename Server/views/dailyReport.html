@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="userDetails">
+<head>
+    <meta charset="UTF-8">
+    <title>Daily Report</title>
+    <style>
+        body{
+            top:130px;
+        }
+        .card {
+            /* Add shadows to create the "card" effect */
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            transition: 0.3s;
+            width:40%;
+        }
+
+        /* On mouse-over, add a deeper shadow */
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        }
+
+        /* Add some padding inside the card container */
+        .container-fluid {
+            padding: 2px 16px;
+        }
+    </style>
+</head>
+<body ng-controller="userDaily-ctrl">
+    <div class="container-fluid">
+        <div class="row">
+            <div class='col-md-offset-6 col-sm-6'>
+                <div class="form-group">
+                    <div class='input-group date' id='datetimepicker1'>
+                        <input type='text' class="form-control" />
+                        <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="row profile">
+            <div class="card">
+                <div class="container-fluid">
+                    <div class="row">
+                        <h5 class="text-center"><strong>10 Nov</strong></h5>
+                        <h6><strong><u>Food Activity:</u></strong></h6>
+                        <label class="text-center"><em>Time</em></label>
+                        <span>10 AM</span><br>
+                        <h6><strong><u>Physical Activity:</u></strong></h6>
+                        <label class="text-center"><em>Time</em></label>
+                        <span>10 AM</span><br>
+                        <label>Activity</label>
+                        <span>Cardio</span><br>
+                        <label>Duration</label>
+                        <span>1 hour</span><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="supporter">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.min.js"></script>
+    <script src="views/js/angular-modal-service/dst/angular-modal-service.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-datatables/0.5.5/angular-datatables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
+    <script type="text/javascript" src="views/js/moment/min/moment.min.js"></script>
+    <script type="text/javascript" src="views/js/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
+    <script type="text/javascript" src="views/js/angular-bootstrap-datetimepicker/src/js/datetimepicker.templates.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-datatables/0.5.5/css/angular-datatables.css">
+    <link rel="stylesheet" href="views/js/angular-bootstrap-datetimepicker/src/css/datetimepicker.css"/>
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+    <style>
+        body{
+            padding-top: 80px;
+            /*background: url('./img/background2.png');*/
+        }
+
+        nav{
+            background-color: #00cca3;
+        }
+
+        .card {
+            /* Add shadows to create the "card" effect */
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            transition: 0.3s;
+        }
+
+        /* On mouse-over, add a deeper shadow */
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        }
+
+        /* Add some padding inside the card container */
+        .container-fluid {
+            padding: 2px 16px;
+        }
+
+        .modal-dialog{
+            background-color: transparent;
+            margin:auto;
+            top:40px;
+            padding: 0px;
+        }
+        .modal{
+            padding:0px;
+            background-color: transparent;
+            margin:0px;
+            padding:0px;
+            width:100%;
+            max-height: 100%;
+        }
+        .modal-header{
+            border:none;
+        }
+
+        .modal .modal-footer{
+            border: none;
+            background-color: white;
+        }
+
+        .modal .modal-footer .btn{
+            margin-right: 10px;
+        }
+
+
+    </style>
+
+</head>
+<body ng-controller="supporter-ctrl as showCase">
+<nav class="navbar navbar-fixed-top" style="background-color: #00cca3">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/redirectSupporterPage">WHP</a>
+        </div>
+        <ul class="nav navbar-nav pull-right">
+            <li class="nav-button pull-right"><a href="/user/logout">Logout</a></li>
+            <li class="nav-button pull-right" ng-click="onAppointmentSelect()"><a>Appointments</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div>
+                            <table datatable="" dt-options="showCase.dtOptions" dt-columns="showCase.dtColumns" dt-instance="showCase.dtInstance" class="row-border hover"></table>                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="container-fluid">
+                    <h5><strong>Appointments</strong></h5>
+                    <h6><em><strong>Today</strong></em></h6>
+                    <div data-ng-repeat="appoint in todayAppoint">
+                        <span><strong>{{appoint.user}}</strong></span><br>
+                        <label>Appointment Time</label>
+                        <span>{{appoint.time}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- The actual modal template, just a bit o bootstrap -->
+<script type="text/ng-template" id="modal.html">
+    <div class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" ng-click="close()" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" action="/appointment/createAppointment" method="post" role="form">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Username</label>
+                            <div class="col-sm-10">
+                                <p>{{user}}</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="date" class="col-sm-2 control-label">Date</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="date" value="{{date}}" ng-model="date">
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="time" class="col-sm-2 control-label">Time</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="time" value="{{time}}" ng-model="time">
+
+                            </div>
+                        </div>
+                    </form>
+                    <div style="margin-left: 80px">
+                        <datetimepicker data-ng-model="data.date" data-on-set-time="onTimeSet(newDate, oldDate)"></datetimepicker>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" ng-click="close()" class="btn" data-dismiss="modal">OK</button>
+                    <button type="button" ng-click="cancel()" class="btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+<script>
+    angular.module('supporter',['datatables','ngRoute','ngAnimate', 'angularModalService', 'ui.bootstrap.datetimepicker']).
+            factory('mod',function () {
+        var user = null;
+        var supporter = null;
+        var setUser = function (username) {
+            user = username;
+        }
+        
+        var getUser = function () {
+            return user;
+        }
+
+        var setSup = function (username) {
+            supporter = username;
+        }
+
+        var getSup = function () {
+            return supporter;
+        }
+        return{
+            setUser: setUser,
+            getUser: getUser,
+            getSup: getSup,
+            setSup: setSup
+        };
+    }).
+    controller('supporter-ctrl',function ($scope, $http, mod, $window, $filter, $compile, DTOptionsBuilder, DTColumnBuilder, ModalService) {
+        var role_user = JSON.parse('<%- JSON.stringify(message) %>');
+        if(role_user!=null){
+            console.log(role_user);
+            mod.setSup(role_user);
+        }
+
+        $http({
+            method:"POST",
+            url:"/appointment/getAllAppointments",
+            data:{'username':role_user,"role":"supporter"}
+        }).then(function successCallback(response){
+            $scope.appointment = response.data.result.appointments;
+            var date = new Date();
+            var today = date.getMonth()+1 + "/" + date.getDate() + "/" + date.getFullYear();
+            $scope.todayAppoint = $filter("filter")($scope.appointment, {date:today});
+            console.log($scope.todayAppoint);
+        }, function errorCallback(response){
+            $window.alert(response.status);
+        });
+
+        var vm = this;
+        vm.message = '';
+        vm.appoint = Appoint;
+        vm.dtInstance = {};
+        vm.persons = {};
+        vm.someClickHandler = someClickHandler;
+        vm.dtOptions = DTOptionsBuilder.fromSource('data1.json')
+                .withFnServerData(serverData)
+                //.withDataProp('users')
+                .withPaginationType('full_numbers')
+                .withDisplayLength(5)
+                .withOption('createdRow', createdRow)
+                .withOption('rowCallback', rowCallback);
+        function serverData(sSource, aoData, fnCallback, oSettings) {
+            oSettings.jqXHR = $.ajax({
+                'dataType': 'json',
+                'type': 'POST',
+                'url': '/user/getAllSupporterUsers/',
+                'data': {'username':role_user},
+                'success': fnCallback
+            });
+
+        }
+
+        vm.dtColumns = [
+            DTColumnBuilder.newColumn('username').withTitle('Username'),
+            DTColumnBuilder.newColumn('details.startDate').withTitle('Start Date'),
+            DTColumnBuilder.newColumn(null).notSortable()
+                    .renderWith(actionsHtml)
+        ];
+
+        function Appoint(person) {
+            event.stopPropagation();
+            var user = vm.persons[person];
+            mod.setUser(user.username);
+           // vm.message = 'You are trying to remove the row: ' + JSON.stringify(person);
+            //console.log(vm.persons);
+            ModalService.showModal({
+                templateUrl: 'modal.html',
+                controller: "ModalController"
+            }).then(function(modal) {
+                modal.element.modal();
+                modal.close.then(function(result) {
+                    $scope.message = "You said " + result;
+                });
+            });
+            // Delete some data and call server to make changes...
+            // Then reload the data so that DT is refreshed
+            vm.dtInstance.reloadData();
+        }
+
+        function createdRow(row, data, dataIndex) {
+            // Recompiling so we can bind Angular directive to the DT
+            $compile(angular.element(row).contents())($scope);
+        }
+
+        function actionsHtml(data, type, full, meta) {
+            vm.persons[data.username] = data;
+            //console.log(data);
+            return '<button style="background-color: transparent;border: none;" ng-click="showCase.appoint(\'' + data.username + '\')" )"="">' +
+                    '   <i class="fa fa-calendar" aria-hidden="true"></i>' +
+                    '</button></div>';
+        }
+
+
+        function someClickHandler(info) {
+            vm.message = info.id + ' - ' + info.firstName;
+            $window.sessionStorage.setItem('curUser',JSON.stringify(info));
+            location.href = '/supporter/getUser';
+        }
+        function rowCallback(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            // Unbind first in order to avoid any duplicate handler (see https://github.com/l-lin/angular-datatables/issues/87)
+            $('td', nRow).unbind('click');
+            $('td', nRow).bind('click', function() {
+                $scope.$apply(function() {
+                    vm.someClickHandler(aData);
+                });
+            });
+            return nRow;
+        }
+
+        $scope.onAppointmentSelect = function(){
+
+            ModalService.showModal({
+                templateUrl: 'modal.html',
+                controller: "ModalController",
+                resolve: {
+                    getPerson: function () {
+                        return person.username;
+                    }
+                }
+            }).then(function(modal) {
+                modal.element.modal();
+                modal.close.then(function(result) {
+                    $scope.message = "You said " + result;
+                });
+            });
+        }
+    })
+            .controller('ModalController',function($scope, close, mod, $http, $window) {
+                $scope.date=null;
+                $scope.time=null;
+                function formatDate(date) {
+                    var hours = date.getHours();
+                    var minutes = date.getMinutes();
+                    var ampm = hours >= 12 ? 'pm' : 'am';
+                    hours = hours % 12;
+                    hours = hours ? hours : 12; // the hour '0' should be '12'
+                    minutes = minutes < 10 ? '0'+minutes : minutes;
+                    var strTime = hours + ':' + minutes + ' ' + ampm;
+                    return strTime;
+                }
+                $scope.onTimeSet = function (newDate, oldDate) {
+                    $scope.date = newDate.getMonth()+1 + "/" + newDate.getDate() + "/" + newDate.getFullYear();
+                    $scope.time = formatDate(newDate);
+                }
+                $scope.user = mod.getUser();
+                $scope.close = function (result) {
+                    console.log("hello");
+                    var supporter = mod.getSup();
+                    if($scope.time!=null && $scope.date!=null) {
+                        $http({
+                            method: "POST",
+                            url: "/appointment/createAppointment",
+                            data: {'username': supporter, 'date': $scope.date, 'time': $scope.time, 'user':$scope.user}
+                        }).then(function successCallback(response) {
+                            $window.alert(response.data.message);
+                        }, function errorCallback(response) {
+                            $window.alert(response.status);
+                        });
+                    }
+                    close(result, 500); // close, but give 500ms for bootstrap to animate
+                };
+            });
+
+</script>
+</body>
+</html>

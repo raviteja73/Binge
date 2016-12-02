@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_edit_weekly_details"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="homework.com.bingeeatingproject.EditWeeklyDetails">
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:ems="10"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="14dp"
+        android:id="@+id/editText_edweekNo" />
+
+    <TextView
+        android:text="@string/totalBinges"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editText_edweekNo"
+        android:layout_alignStart="@+id/editText_edweekNo"
+        android:id="@+id/textView5" />
+
+    <SeekBar
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView5"
+        android:layout_toEndOf="@+id/editText_edweekNo"
+        android:id="@+id/seekBar_edbinges"
+        android:progress="1"
+        android:max="7" />
+
+    <TextView
+        android:text="@string/totalCount"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView5"
+        android:layout_alignStart="@+id/textView5"
+        android:layout_marginTop="25dp"
+        android:id="@+id/textView7" />
+
+    <SeekBar
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView7"
+        android:layout_alignStart="@+id/seekBar_edbinges"
+        android:id="@+id/seekBar_edcount"
+        android:progress="1"
+        android:max="7" />
+
+    <TextView
+        android:text="@string/weight"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView7"
+        android:layout_alignStart="@+id/textView7"
+        android:layout_marginTop="25dp"
+        android:id="@+id/textView14" />
+
+    <SeekBar
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView14"
+        android:layout_alignStart="@+id/seekBar_edcount"
+        android:id="@+id/seekBar_edweight" />
+
+    <TextView
+        android:text="@string/gdays"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView14"
+        android:layout_alignStart="@+id/textView14"
+        android:layout_marginTop="44dp"
+        android:id="@+id/textView16" />
+
+    <EditText
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:ems="10"
+        android:layout_marginStart="26dp"
+        android:id="@+id/editText_edwgdays"
+        android:layout_alignBaseline="@+id/textView16"
+        android:layout_alignBottom="@+id/textView16"
+        android:layout_toEndOf="@+id/textView16" />
+
+    <TextView
+        android:text="@string/days"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView16"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/textView18"
+        android:layout_toEndOf="@+id/editText_edwgdays" />
+
+    <TextView
+        android:text="@string/goal"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editText_edwgdays"
+        android:layout_alignStart="@+id/textView16"
+        android:layout_marginTop="24dp"
+        android:id="@+id/textView20" />
+
+    <TextView
+        android:text="@string/days"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView20"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="17dp"
+        android:id="@+id/textView21"
+        android:layout_toEndOf="@+id/editText_edgoals" />
+
+    <TextView
+        android:text="@string/gPhysical"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editText_edgoals"
+        android:layout_alignStart="@+id/textView20"
+        android:layout_marginTop="21dp"
+        android:id="@+id/textView22" />
+
+    <TextView
+        android:text="@string/days"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView22"
+        android:layout_toEndOf="@+id/editText_edphysical"
+        android:id="@+id/textView23" />
+
+    <EditText
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:ems="10"
+        android:id="@+id/editText_edgoals"
+        android:layout_alignBaseline="@+id/textView20"
+        android:layout_alignBottom="@+id/textView20"
+        android:layout_toEndOf="@+id/textView20" />
+
+    <EditText
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:ems="10"
+        android:id="@+id/editText_edphysical"
+        android:layout_alignBottom="@+id/textView22"
+        android:layout_alignStart="@+id/editText_edwgdays" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:ems="10"
+        android:layout_below="@+id/textView22"
+        android:layout_alignStart="@+id/textView22"
+        android:layout_marginTop="54dp"
+        android:id="@+id/editText_ewevents"
+        android:hint="@string/wevents" />
+
+    <Button
+        android:text="@string/edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editText_ewevents"
+        android:layout_toStartOf="@+id/editText_edphysical"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/button_ewdedit" />
+
+    <Button
+        android:text="@string/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/button_ewdedit"
+        android:layout_alignEnd="@+id/editText_edgoals"
+        android:id="@+id/button_ewddelete"
+        android:layout_alignTop="@+id/button_ewdedit" />
+
+</RelativeLayout>

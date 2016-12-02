@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_edit_food_details"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="homework.com.bingeeatingproject.EditFoodDetails">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:srcCompat="@color/cardview_light_background"
+        android:layout_marginStart="111dp"
+        android:id="@+id/imageView_efd"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_below="@+id/imageView_efd"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="35dp"
+        android:id="@+id/editText_efddate" />
+
+    <EditText
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_alignBottom="@+id/editText_efddate"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/editText_efdtime" />
+
+    <EditText
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_alignBottom="@+id/editText_efdfood"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/editText_efddrink"
+        android:hint="@string/drink" />
+
+    <TextView
+        android:text="@string/binge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editText_efdplace"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="12dp"
+        android:id="@+id/textView2" />
+
+    <TextView
+        android:text="@string/vomiting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/switch_efdbinge"
+        android:layout_alignStart="@+id/textView2"
+        android:layout_marginTop="11dp"
+        android:id="@+id/textView3" />
+
+    <TextView
+        android:text="@string/lexative"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/switch_efdvomiting"
+        android:layout_alignStart="@+id/textView3"
+        android:layout_marginTop="13dp"
+        android:id="@+id/textView4" />
+
+    <Button
+        android:text="@string/edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/switch_efdlexative"
+        android:layout_alignEnd="@+id/textView4"
+        android:layout_marginTop="42dp"
+        android:id="@+id/button_efdedit" />
+
+    <Button
+        android:text="@string/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_efddelete"
+        android:layout_alignBaseline="@+id/button_efdedit"
+        android:layout_alignBottom="@+id/button_efdedit"
+        android:layout_alignStart="@+id/switch_efdlexative" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/switch_efdvomiting"
+        android:layout_alignTop="@+id/textView3"
+        android:layout_alignEnd="@+id/switch_efdbinge" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/switch_efdbinge"
+        android:layout_alignBaseline="@+id/textView2"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_alignStart="@+id/editText_efdnotes"
+        />
+
+    <EditText
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editText_efdplace"
+        android:hint="@string/place"
+        android:layout_below="@+id/editText_efdfood"
+        android:layout_alignStart="@+id/button_efdedit"
+        android:layout_marginTop="10dp" />
+
+    <EditText
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editText_efdnotes"
+        android:hint="@string/notes"
+        android:layout_alignBaseline="@+id/editText_efdplace"
+        android:layout_alignBottom="@+id/editText_efdplace"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editText_efdfood"
+        android:hint="@string/food"
+        android:layout_marginTop="24dp"
+        android:layout_alignTop="@+id/editText_efddate"
+        android:layout_alignStart="@+id/textView2" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/switch_efdlexative"
+        android:padding="20dp"
+        android:layout_below="@+id/switch_efdvomiting"
+        android:layout_toEndOf="@+id/editText_efdplace" />
+</RelativeLayout>

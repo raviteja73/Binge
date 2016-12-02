@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="userDetails">
+<head>
+    <meta charset="UTF-8">
+    <title>Details</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
+    <script type="text/javascript" src="../views/js/moment/min/moment.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="../views/js/progressbar.min.js"></script>
+    <!--script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css"-->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
+    <link rel="stylesheet" href="../views/css/userstyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/css/bootstrap-datetimepicker.min.css">
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <style>
+        body{
+            padding-top: 80px;
+            /*background: url('./img/background2.png');*/
+        }
+
+        nav{
+            background-color: #00cca3;
+        }
+    </style>
+</head>
+<body ng-controller="userDet-ctrl">
+<nav class="navbar navbar-fixed-top" style="background-color: #00cca3">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/redirectSupporterPage">WHP</a>
+        </div>
+        <ul class="nav navbar-nav pull-right">
+            <li class="nav-button pull-right"><a href="/user/logout">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="container-fluid">
+    <div class="row profile">
+        <div class="col-md-3">
+            <div class="profile-sidebar">
+                <!-- SIDEBAR USER TITLE -->
+                <div class="profile-usertitle">
+                    <div class="profile-usertitle-name">
+                        {{user.username}}
+                    </div>
+                    <!--div class="profile-usertitle-job">
+                        Developer
+                    </div-->
+                </div>
+                <!-- END SIDEBAR USER TITLE -->
+                <!-- SIDEBAR MENU -->
+                <div class="profile-usermenu">
+                    <ul class="nav">
+                        <li class="active">
+                            <a href="#daily">
+                                <i class="glyphicon glyphicon-list"></i>
+                                Daily </a>
+                        </li>
+                        <li>
+                            <a href="#weekly">
+                                <i class="glyphicon glyphicon-th"></i>
+                                Weekly </a>
+                        </li>
+                        <li>
+                            <a href="#tasks">
+                                <i class="glyphicon glyphicon-tasks"></i>
+                                Tasks </a>
+                        </li>
+                        <li>
+                            <a href="#progress">
+                                <i class="glyphicon glyphicon-flag"></i>
+                                Progress </a>
+                        </li>
+                        <li>
+                            <a href="#settings">
+                                <i class="glyphicon glyphicon-cog"></i>
+                                Settings </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- END MENU -->
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div ng-view class="profile-content">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+    /*var info = JSON.parse();
+    console.log(info);*/
+    angular.module('userDetails',['ngRoute'])
+            .config(function($routeProvider){
+        $routeProvider
+                .when('/daily', {
+                    templateUrl: '../views/dailyReport.html',
+                    controller: 'userDaily-ctrl'
+                })
+                .when('/weekly', {
+                    templateUrl: '../views/weeklyReport.html',
+                    //controller: 'SupporterReg-ctrl'
+                })
+                .when('/tasks', {
+                    templateUrl: '../views/tasks.html',
+                    controller: 'userChallenge-ctrl'
+                })
+                .when('/progress', {
+                    templateUrl: '../views/progress.html'
+                    //controller: 'UserReg-ctrl'
+                })
+                .when('/settings', {
+                    templateUrl: '../views/settings.html'
+                    //controller: 'UserReg-ctrl'
+                })
+
+
+    })
+            .controller('userDet-ctrl', function ($scope, $window, $http) {
+                location.href="#daily"
+                $scope.user = JSON.parse($window.sessionStorage.getItem("curUser"));
+                console.log($window.localStorage);
+                console.log($scope.user);
+                $(document).on('click', '.profile-usermenu ul li', function() {
+                    $(".profile-usermenu ul li").removeClass("active");
+                    $(this).addClass("active");
+                });
+            })
+            .controller('userDaily-ctrl', function ($scope, $http) {
+                $http({
+                    method:"POST",
+                    url:'/activity/getDailyActivityLog',
+                    data:{username:$scope.user.username}
+                }).then(function successCallback(response) {
+                    console.log(response.data);
+                    $scope.userdata = response.data;
+                },function errorCallback(response) {
+                    $window.alert("error");
+                });
+
+                $(function () {
+                    $('#datetimepicker1').datetimepicker();
+                });
+            })
+            .controller('userChallenge-ctrl', function ($scope, $http,$window) {
+                $scope.count = 1;
+                $scope.challenges = null;
+                $http({
+                    method:"POST",
+                    url:'/challenge/getChallenge',
+                    data:{username:$scope.user.username}
+                }).then(function successCallback(response) {
+                    if(response.data.result){
+                        $scope.challenges = response.data.result.challenges;
+                        $scope.count++;
+                    }
+                },function errorCallback(response) {
+                    console.log(response);
+                });
+                $scope.create = function(){
+                    if($scope.challenge!=null){
+                        $http({
+                            method:"POST",
+                            url:'/challenge/createChallenge',
+                            data:{username:$scope.user.username,challenge:$scope.challenge,challengeNumber:$scope.count}
+                        }).then(function successCallback(response) {
+                            //console.log(response.data);
+                            var r = confirm("Are u sure!");
+                            if (r == true) {
+                                location.href = "#tasks";
+                            } else {
+
+                            }
+                            //location.href = "/supporter/getUser#/tasks";
+                        },function errorCallback(response) {
+                            $window.alert("error");
+                        });
+                    }
+
+                }
+
+            })
+</script>
+</html>

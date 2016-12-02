@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="admin">
+<head>
+    <meta charset="UTF-8">
+    <title>RegisterUser</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
+    <style>
+        body
+        {
+            padding-top:80px;
+            background-repeat:no-repeat;
+            background-size:cover;
+            position: relative;
+        }
+
+        .header{
+            height:5%;
+            position: absolute;
+        }
+
+
+    </style>
+</head>
+<body ng-controller="UserReg-ctrl">
+
+<div class="container">
+    <div id="login-page" class="row">
+            <div class="col s12 z-depth-6 card-panel">
+                <form class="login-form" action="/user/createUser" method="post">
+                    <div class="row">
+                        <div class="input-field col s12 center">
+                            <h5 class="center login-form-text">Create User</h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i class="mdi-social-person-outline prefix"></i>
+                            <input class="validate" id="email" type="text" name="username" required="" aria-required="true">
+                            <label for="email" data-error="wrong" data-success="right" class="center-align">Username</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i class="mdi-action-lock-outline prefix"></i>
+                            <input id="password" type="password" name="password" required="" aria-required="true">
+                            <label for="password">Password</label>
+                        </div>
+                    </div>
+                    <div class="row margin">
+                        <label>Supporter</label>
+                        <select name="supporter" id="repeatSelect"  class="browser-default">
+                            <option ng-repeat="option in data" value="{{option.details.name}}">{{option.details.name}}</option>
+                        </select>
+                    </div>
+                    <div class="row margin" hidden>
+                        <div class="input-field col s12">
+                            <i class="mdi-communication-call prefix"></i>
+                            <input id="role" type="text" name="role" value="user">
+                            <label for="role">Role</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <button type="submit" class="btn waves-effect waves-light col s12">Create</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <button type="button" ng-click="onCancel()" class="btn #757575 grey darken-1 col s12">Cancel</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_add_weekly_details"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="homework.com.bingeeatingproject.AddWeeklyDetails">
+
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/editText_weekno"
+        android:hint="@string/weekno"/>
+
+    <SeekBar
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView_tbinge"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/seekBar_tbinges"
+        android:progress="1"
+        android:max="7" />
+    <TextView
+        android:text="@string/totalCount"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView_tbinge"
+        android:layout_marginTop="29dp"
+        android:id="@+id/textView_tcount" />
+
+    <SeekBar
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView_tcount"
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="40dp"
+        android:id="@+id/seekBar_tcount"
+        android:progress="1"
+        android:max="7" />
+    <TextView
+        android:text="@string/weight"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView_tcount"
+        android:layout_marginTop="29dp"
+        android:id="@+id/textView_tweight" />
+
+    <SeekBar
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView_tweight"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/seekBar_tweight"
+        android:max="100" />
+    <TextView
+        android:text="@string/gdays"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView_tweight"
+        android:layout_marginTop="29dp"
+        android:id="@+id/textView_gdays" />
+
+    <EditText
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_below="@+id/seekBar_tweight"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="93dp"
+        android:layout_marginTop="11dp"
+        android:id="@+id/editText_gdays" />
+
+    <TextView
+        android:text="@string/days"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView_days"
+        android:layout_alignBaseline="@+id/textView_gdays"
+        android:layout_alignBottom="@+id/textView_gdays"
+        android:layout_alignStart="@+id/seekBar_tweight"
+        android:layout_marginStart="47dp" />
+    <TextView
+        android:text="@string/goal"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView_gdays"
+        android:layout_marginTop="29dp"
+        android:id="@+id/textView_goal" />
+
+    <EditText
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_below="@+id/editText_gdays"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="93dp"
+        android:layout_marginTop="11dp"
+        android:id="@+id/editText_goal" />
+    <TextView
+        android:text="@string/days"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView_days1"
+        android:layout_alignBaseline="@+id/textView_goal"
+        android:layout_alignBottom="@+id/textView_goal"
+        android:layout_alignStart="@+id/textView_days"
+         />
+    <TextView
+        android:text="@string/gPhysical"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView_goal"
+        android:layout_marginTop="29dp"
+        android:id="@+id/textView_gPhysical" />
+
+    <EditText
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_below="@+id/editText_goal"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="93dp"
+        android:layout_marginTop="11dp"
+        android:id="@+id/editText_gPhysical" />
+    <TextView
+        android:text="@string/days"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView"
+        android:layout_alignBaseline="@+id/textView_gPhysical"
+        android:layout_alignBottom="@+id/textView_gPhysical"
+        android:layout_alignStart="@+id/textView_days1"
+        />
+
+    <EditText
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_marginLeft="30dp"
+        android:id="@+id/editText_events"
+        android:hint="@string/wevents"
+        android:layout_below="@+id/textView_gPhysical"
+        android:layout_alignEnd="@+id/editText_gPhysical"
+        android:layout_marginTop="31dp" />
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/proceed"
+        android:id="@+id/button_addwproceed"
+        android:background="#a0bcc5"
+        android:textColor="#000000"
+        android:textSize="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="18dp" />
+
+    <TextView
+        android:text="@string/totalBinges"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:id="@+id/textView_tbinge"
+        android:layout_below="@+id/editText_weekno"
+        android:layout_alignParentStart="true" />
+
+
+</RelativeLayout>
