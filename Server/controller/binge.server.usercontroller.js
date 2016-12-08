@@ -13,7 +13,7 @@ exports.createUser = function (req, res) {
         BingeUser.find({username: req.body.username}, function (err, result) {
             if (err) {
                 console.log("Error: \n"+err);
-                res.status(500).send({message:"Error: \n"+err});
+                res.status(500).send({message:"Error: \n"+err,resultCode:-1});
             } else if (result.length) {
                 console.log("Cannot create this user, as his record already exist");
                 res.status(409).render('adminhome',{message:{'value':"User already exist", 'role':"supporter"}});
@@ -46,7 +46,7 @@ exports.createUser = function (req, res) {
         BingeUser.find({username: req.body.username}, function (err, result) {
             if (err) {
                 console.log("Error: \n"+err);
-                res.status(500).send({message:"Error: \n"+err});
+                res.status(500).send({message:"Error: \n"+err,resultCode:-1});
             } else if (result.length) {
                 console.log("Cannot create this user, as his record already exist");
                 res.status(409).render('adminhome.ejs',{message:{'value':"User already exist", 'role':"user"}});
@@ -78,7 +78,7 @@ exports.createUser = function (req, res) {
                         }
                     }else if(result){
                         console.log("User created");
-                        res.status(201).render("adminhome.ejs",{message:null});
+                        res.status(201).render("adminhome.ejs",{message:null,resultCode:1});
                     }
                 });
             }
@@ -111,15 +111,16 @@ exports.validateUser = function (req, res) {
                     res.header('Auth', token).status(200).send({
                         'Status': 'Login Successful',
                         'token': token,
-                        'username': req.body.username
+                        'username': req.body.username,
+                        'resultCode':1
                     });
                 } else {
-                    res.status(401).send({message:"Unauthorized"});
+                    res.status(401).send({message:"Unauthorized",resultCode:-1});
                 }
             }
         }else {
             console.log("User doesn't exist.Unauthorized to login");
-            res.status(401).send({message:"User doesn't exist"});
+            res.status(401).send({message:"User doesn't exist",resultCode:-1});
         }
     });
 };
@@ -134,9 +135,12 @@ exports.getAllUsers = function (req, res) {
                 console.log("Error: \n"+err);
                 res.status(400).redirect('/');
             }
+        } else if(!result){
+            console.log("Users doesn't exist");
+            res.status(200).send({message:"Users doesn't exist",resultCode:0,result:result});
         } else if (result) {
             console.log("User details retrieved");
-            res.status(200).send({message:"User details retrieved",result:result});
+            res.status(200).send({message:"User details retrieved",resultCode:1,result:result});
         }
     });
 };
@@ -151,9 +155,12 @@ exports.getAllSupporters = function (req, res) {
                 console.log("Error: \n"+err);
                 res.status(400).redirect('/');
             }
+        }else if(!result){
+            console.log("Supporters doesn't exist");
+            res.status(200).send({message:"Supporters doesn't exist",resultCode:0,result:result});
         }else if (result) {
-            console.log("supporter details retrieved");
-            res.status(200).send({message:"User details retrieved",result:result});
+            console.log("Supporter details retrieved");
+            res.status(200).send({message:"Supporter details retrieved",resultCode:1,result:result});
         }
     });
 };
@@ -175,7 +182,7 @@ exports.getAllSupporterUsers = function (req, res) {
             UserAppointments.find({$or:[{date:today},{date:tomorrow}],_id:req.body.username},{"appointments.date":1,"appointments.time":1,"appointments.user":1,"appointments.status":1},function(err,appointmentResult){
                     if(err){
                         console.log("Error: \n"+err);
-                        res.status(500).send({message:"Error Occurred./n Error: "+err});
+                        res.status(500).send({message:"Error Occurred./n Error: "+err,resultCode:-1});
                     }else if(appointmentResult){
                     console.log("appointment details retrieved");
                     res.status(200).send(usersResult);
@@ -188,10 +195,10 @@ exports.deleteUser=function(req,res){
     BingeUser.remove({_id:req.body.username},function(err,result){
         if(err){
             console.log("Error: \n"+err);
-            res.status(500).send({message:"Error: \n"+err});
+            res.status(500).send({message:"Error: \n"+err,resultCode:-1});
         }else if(result){
             console.log("User deleted");
-            res.status(200).send({message:"User deleted"});
+            res.status(200).send({message:"User deleted",resultCode:0});
         }
     });
 };
@@ -199,10 +206,13 @@ exports.changeSupporter=function(req,res){
     BingeUser.update({_id:req.body.username},{$set:{"details.supporter":req.body.supporter,"details.updatedOn":new Date()}},function(err,result){
         if(err){
             console.log("Error: \n"+err);
-            res.status(500).send({message:"Error: \n"+err});
+            res.status(500).send({message:"Error: \n"+err,resultCode:-1});
         }else if(result.nModified==1){
             console.log("User details updated");
-            res.status(202).send({message:"User details updated"});
+            res.status(200).send({message:"User details updated",resultCode:1});
+        }else if(result.nModified==0){
+            console.log("User details not updated");
+            res.status(200).send({message:"User details not updated",resultCode:0});
         }
     });
 };
@@ -211,13 +221,13 @@ exports.editPassword=function(req,res){
     BingeUser.update({_id:req.body.username,role:req.body.role},{$set:{password:passwordHash.generate(req.body.password)}},function(err,result){
         if(err){
             console.log("Error: \n"+err);
-            res.status(500).send({message:"Error: \n"+err});
+            res.status(500).send({message:"Error: \n"+err,resultCode:-1});
         }else if(result.nModified==1){
             console.log("Password updated");
-            res.status(202).send({message:"Password updated"});
+            res.status(202).send({message:"Password updated",resultCode:1});
         }else if(result.nModified==0){
             console.log("No changes made");
-            res.status(202).send({message:"No changes made"});
+            res.status(202).send({message:"No changes made",resultCode:0});
         }
     });
 }

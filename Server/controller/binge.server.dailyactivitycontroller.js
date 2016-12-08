@@ -34,32 +34,26 @@ exports.dailyActivityLog=function(req,res){
         DailyActivityLog.update({_id:req.body.username},{$addToSet:{foodActivityLog:hourlyFoodLog}},{upsert:true},function(err,result){
             if(err){
                 console.log("Error: \n"+err);
-                res.status(500).send({message:"Error: \n"+err})
-            }else if(result.upserted){
-                console.log("Document Created");
-                res.status(201).send({message:"Document Created"});
-            }else if(result.nModified==1){
-                console.log("Document Updated");
-                res.status(200).send({message:"Document Updated"});
+                res.status(500).send({message:"Error: \n"+err,resultCode:-1})
+            }else if(result.upserted || result.nModified ==1){
+                console.log("Food Activity Updated");
+                res.status(201).send({message:"Food Activity Updated",resultCode:1});
             }else if(result.nModified==0){
                 console.log("No changes made");
-                res.status(409).send({message:"No changes made"});
+                res.status(409).send({message:"No changes made",resultCode:0});
             }
         });
     }else if(req.body.activityType=="physical"){
         DailyActivityLog.update({_id:req.body.username},{$addToSet:{physicalActivityLog:hourlyPhysicalLog}},{upsert:true},function(err,result){
             if(err){
                 console.log("Error: \n"+err);
-                res.status(500).send({message:"Error: \n"+err})
-            }else if(result.upserted){
-                console.log("Document Created");
-                res.status(201).send({message:"Document Created"});
-            }else if(result.nModified==1){
-                console.log("Document Updated");
-                res.status(200).send({message:"Document Updated"});
+                res.status(500).send({message:"Error: \n"+err,resultCode:-1})
+            }else if(result.upserted || result.nModified==1){
+                console.log("Physical Activity Updated");
+                res.status(201).send({message:"Physical Activity Updated",resultCode:1});
             }else if(result.nModified==0){
                 console.log("No changes made");
-                res.status(409).send({message:"No changes made"});
+                res.status(409).send({message:"No changes made",resultCode:0});
             }
         });
     }
@@ -69,13 +63,13 @@ exports.getDailyActivityLog=function(req,res){
     DailyActivityLog.find({_id:req.body.username},{_id:0,__v:0},function(err,result){
         if(err){
             console.log("Error: \n"+err);
-            res.status(500).send({message:"Error: \n"+err});
+            res.status(500).send({message:"Error: \n"+err,resultCode:-1});
         }else if(!result){
-            console.log("No document found");
-            res.status(404).send({message:"No document found"});
+            console.log("Daily activities not found");
+            res.status(404).send({message:"Daily activities not found",resultCode:0});
         }else if(result){
-            console.log("Daily activity document retrieved");
-            res.status(200).send({message:"Document retrieved",result:result[0]});
+            console.log("Daily activities retrieved");
+            res.status(200).send({message:"Daily activities retrieved",resultCode:1,result:result[0]});
         }
     });
 };
@@ -87,13 +81,13 @@ exports.editDailyActivityLog=function(req,res){
             {_id:0,__v:0},function(err,result){
                 if(err){
                     console.log("Error: \n"+err);
-                    res.status(500).send({message:"Error: \n"+err});
+                    res.status(500).send({message:"Error: \n"+err,resultCode:-1});
                 }else if(result.nModified==1){
-                    console.log("Daily activity document is updated");
-                    res.status(200).send({message:"Document Updated"});
+                    console.log("Daily activity updated");
+                    res.status(200).send({message:"Daily activity document updated",resultCode:1});
                 }else if(result.nModified==0){
-                    console.log("No Changes made");
-                    res.status(409).send({message:"No Changes made"});
+                    console.log("No Changes made to food activity");
+                    res.status(409).send({message:"No Changes made to food activity",resultCode:0});
                 }
             });
     }else if(req.body.activityType=="physical"){
@@ -102,13 +96,13 @@ exports.editDailyActivityLog=function(req,res){
             {_id:0,__v:0},function(err,result){
                 if(err){
                     console.log("Error: \n"+err);
-                    res.status(500).send({message:"Error: \n"+err});
+                    res.status(500).send({message:"Error: \n"+err,resultCode:-1});
                 }else if(result.nModified==1){
-                    console.log("Document is Updated");
-                    res.status(200).send({message:"Document Updated"});
+                    console.log("Physical activity updated");
+                    res.status(200).send({message:"Physical activity updated",resultCode:1});
                 }else if(result.nModified==0){
-                    console.log("No Changes made");
-                    res.status(409).send({message:"No Changes made"});
+                    console.log("No Changes made to physical activity");
+                    res.status(409).send({message:"No Changes made to physical activity",resultCode:0});
                 }
             });
     }
@@ -120,26 +114,26 @@ exports.deleteDailyActivityLog=function(req,res){
         DailyActivityLog.update({_id:req.body.username},{$pull:{foodActivityLog:{date:req.body.date,time:req.body.time}}},function(err,result){
             if(err){
                 console.log("Error: \n"+err);
-                res.status(500).send({message:"Error: \n"+err});
+                res.status(500).send({message:"Error: \n"+err,resultCode:-1});
             }else if(result.nModified == 1){
-                console.log("Food log deleted");
-                res.status(200).send({message:"Food log deleted"});
+                console.log("Food activity deleted");
+                res.status(200).send({message:"Food activity deleted",resultCode:1});
             }else if(result.nModified==0){
-                console.log("Log doesn't exist.");
-                res.status(409).send({message:"Log doesn't exist."});
+                console.log("No changes made to food activity");
+                res.status(409).send({message:"No changes made to food activity",resultCode:0});
             }
         });
     }else if(req.body.activityType =="physical"){
         DailyActivityLog.update({_id:req.body.username},{$pull:{physicalActivityLog:{date:req.body.date,time:req.body.time}}},function(err,result){
             if(err){
                 console.log("Error: \n"+err);
-                res.status(500).send({message:"Error: \n"+err});
+                res.status(500).send({message:"Error: \n"+err,resultCode:-1});
             }else if(result.nModified == 1){
-                console.log("Physical log deleted");
-                res.status(200).send({message:"Physical log deleted"});
+                console.log("Physical activity deleted");
+                res.status(200).send({message:"Physical activity deleted",resultCode:1});
             }else if(result.nModified==0){
-                console.log("Log doesn't exist.");
-                res.status(409).send({message:"Log doesn't exist."});
+                console.log("No changes made to physical activity");
+                res.status(409).send({message:"No changes made to physical activity",resultCode:0});
             }
         });
     }

@@ -34,16 +34,13 @@ exports.weeklyActivityLog=function(req,res){
             WeeklyActivityLog.update({_id:req.body.username},{$addToSet:{weeklyLog:weeklyLogEntries}},{upsert:true},function(err,result){
                 if(err){
                     console.log("Error. \n"+err);
-                    res.status(500).send({message:"Error. \n"+err});
-                }else if(result.upserted){
-                    console.log("Document Created");
-                    res.status(201).send({message:"Document Created"});
-                }else if(result.nModified==1){
-                    console.log("Document Updated");
-                    res.status(200).send({message:"Document Updated"});
+                    res.status(500).send({message:"Error. \n"+err,resultCode:-1});
+                }else if(result.upserted || result.nModified){
+                    console.log("Weekly activity created");
+                    res.status(201).send({message:"Weekly activity created",resultCode:1});
                 }else if(result.nModified==0){
-                    console.log("No changes made");
-                    res.status(409).send({message:"No changes made"});
+                    console.log("No changes made to weekly activity");
+                    res.status(409).send({message:"No changes made to weekly activity",resultCode:0});
                 }
             });
         }
@@ -54,13 +51,13 @@ exports.editWeeklyActivityLog=function(req,res){
     WeeklyActivityLog.update({_id:req.body.username,"weeklyLog.weekNumber":req.body.weekNumber}, {$set:{'weeklyLog.$.binges':req.body.binges,'weeklyLog.$.weightControlUsage':req.body.weightControlUsage,'weeklyLog.$.goodDays':req.body.goodDays,'weeklyLog.$.weight':req.body.weight,'weeklyLog.$.fruitVegetableCount':req.body.fruitVegetableCount,'weeklyLog.$.physicallyActiveDays':req.body.physicallyActiveDays,'weeklyLog.$.events':req.body.events}},function(err,result){
         if(err){
             console.log("Error. \n"+err);
-            res.status(500).send({message:"Error. \n"+err});
+            res.status(500).send({message:"Error. \n"+err,resultCode:-1});
         }else if(result.nModified==1){
-            console.log("Document Updated");
-            res.status(200).send({message:"Document Updated"});
+            console.log("Weekly activity updated");
+            res.status(200).send({message:"Weekly activity updated",resultCode:1});
         }else if(result.nModified==0){
-            console.log("No changes made");
-            res.status(409).send({message:"No changes made"});
+            console.log("No changes made to weekly activity");
+            res.status(409).send({message:"No changes made to weekly activity",resultCode:0});
         }
     });
 };
@@ -69,13 +66,13 @@ exports.getWeeklyActivityLog=function(req,res){
   WeeklyActivityLog.find({_id:req.body.username},{_id:0,__v:0,"weeklyLog._id":0},function(err,result){
       if(err){
           console.log("Error. \n"+err);
-          res.status(500).send({message:"Error. \n"+err});
+          res.status(500).send({message:"Error. \n"+err,resultCode:-1});
       }else if(!result){
-          console.log("No document found");
-          res.status(404).send({message:"No document found"});
+          console.log("Weekly activity not found");
+          res.status(404).send({message:"Weekly activity not found",resultCode:0});
       }else if(result){
-          console.log("Weekly log found");
-          res.status(200).send({message:"Results retrieved.",result:result[0]});
+          console.log("Weekly activities retrieved");
+          res.status(200).send({message:"Weekly activities retrieved",resultCode:1,result:result[0]});
       }
   });
 };
@@ -83,14 +80,14 @@ exports.getWeeklyActivityLog=function(req,res){
 exports.deleteWeeklyActivityLog=function(req,res){
     WeeklyActivityLog.update({_id:req.body.username},{$pull:{weeklyLog:{weekNumber:req.body.weekNumber}}},function(err,result){
         if(err){
-            console.log("Error Occurred.Error: " + err);
-            res.status(500).send("Error Occurred.Error: " + err);
-        }else if(result.nModified == 1){
-            console.log("Weekly log deleted");
-            res.status(200).send({message:"Weekly log deleted"});
+            console.log("Error. \n"+err);
+            res.status(500).send({message:"Error. \n"+err,resultCode:-1});
         }else if(result.nModified==0){
-            console.log("Log doesn't exist");
-            res.status(409).send({message:"Log doesn't exist"});
+            console.log("Weekly activity not deleted");
+            res.status(404).send({message:"Weekly activity not deleted",resultCode:0});
+        }else if(result.nModified==1){
+            console.log("Weekly activity deleted");
+            res.status(200).send({message:"Weekly activity deleted",resultCode:1});
         }
     });
 };

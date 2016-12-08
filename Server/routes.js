@@ -22,11 +22,11 @@ module.exports = {
         });
 
         //create user route
-        app.post('/user/createUser',verifySession, function (req, res) {
+        app.post('/user/createUser', function (req, res) {
             userController.createUser(req, res);
         });
         //validate user route
-        app.post('/user/validateUser',verifySession, function (req, res) {
+        app.post('/user/validateUser', function (req, res) {
             userController.validateUser(req, res);
         });
 
@@ -34,86 +34,86 @@ module.exports = {
             res.render('/');
         });
 
-        app.get('/redirectAdminPage',verifySession,function (req,res) {
+        app.get('/redirectAdminPage',function (req,res) {
             res.render('adminhome.ejs',{message:null});
         });
 
-        app.get('/redirectSupporterPage',verifySession,function (req,res) {
+        app.get('/redirectSupporterPage',function (req,res) {
             res.render('supporterhome.ejs',{message:req.query.name});
         });
 
         //get all supporter users route
-        app.post('/user/getAllSupporterUsers',verifySession, function (req, res) {
+        app.post('/user/getAllSupporterUsers', function (req, res) {
             userController.getAllSupporterUsers(req, res);
         });
 
-        app.get('/user/getAllSupporters',verifySession,function (req, res) {
+        app.get('/user/getAllSupporters',function (req, res) {
             userController.getAllSupporters(req, res);
         });
 
-        app.get('/user/getAllUsers',verifySession, function (req, res) {
+        app.get('/user/getAllUsers', function (req, res) {
             userController.getAllUsers(req, res);
         });
 
-        app.post('/user/deleteUser',verifySession,function(req,res){
+        app.post('/user/deleteUser',function(req,res){
             console.log("delete request received");
             userController.deleteUser(req,res);
         });
 
-        app.post('/user/changeSupporter',verifySession,function(req,res){
+        app.post('/user/changeSupporter',function(req,res){
             console.log("update request received");
             userController.changeSupporter(req,res);
         });
 
-        app.post('/user/editPassword',verifySession,function(req,res){
+        app.post('/user/editPassword',function(req,res){
             userController.editPassword(req,res);
         });
 
-        app.get('/supporter/getUser',verifySession, function (req, res) {
+        app.get('/supporter/getUser', function (req, res) {
             res.render('userDetails.ejs');
         });
 
 
         //Daily activity routes
-        app.post('/activity/dailyActivityLog',requireAuthentication, function (req, res) {
+        app.post('/activity/dailyActivityLog', function (req, res) {
             dailyActivityController.dailyActivityLog(req, res);
         });
 
-        app.post('/activity/getDailyActivityLog',requireAuthentication,function(req,res){
+        app.post('/activity/getDailyActivityLog',function(req,res){
             dailyActivityController.getDailyActivityLog(req, res);
         });
 
-        app.post('/activity/editDailyActivityLog',requireAuthentication,function(req,res){
+        app.post('/activity/editDailyActivityLog',function(req,res){
             dailyActivityController.editDailyActivityLog(req, res);
         });
 
-        app.post('/activity/deleteDailyActivityLog',requireAuthentication,function(req,res){
+        app.post('/activity/deleteDailyActivityLog',function(req,res){
             dailyActivityController.deleteDailyActivityLog(req, res);
         });
 
         //weekly activity routes
-        app.post('/activity/weeklyActivityLog',requireAuthentication,function(req,res){
+        app.post('/activity/weeklyActivityLog',function(req,res){
             weeklyActivityController.weeklyActivityLog(req,res);
         });
 
-        app.post('/activity/getWeeklyActivityLog',requireAuthentication,function(req,res){
+        app.post('/activity/getWeeklyActivityLog',function(req,res){
             weeklyActivityController.getWeeklyActivityLog(req,res);
         });
 
-        app.post('/activity/editWeeklyActivityLog',requireAuthentication,function(req,res){
+        app.post('/activity/editWeeklyActivityLog',function(req,res){
             weeklyActivityController.editWeeklyActivityLog(req,res);
         });
 
-        app.post('/activity/deleteWeeklyActivityLog',requireAuthentication,function(req,res){
+        app.post('/activity/deleteWeeklyActivityLog',function(req,res){
             weeklyActivityController.deleteWeeklyActivityLog(req,res);
         });
 
         //appointment routes
-        app.post('/appointment/createAppointment',verifySession,function(req,res){
+        app.post('/appointment/createAppointment',function(req,res){
             appointmentController.createAppointment(req,res);
         });
 
-        app.post('/appointment/deleteAppointment',verifySession,function(req,res){
+        app.post('/appointment/deleteAppointment',function(req,res){
             appointmentController.deleteAppointment(req,res);
         });
 
@@ -126,7 +126,7 @@ module.exports = {
         });
 
         //steps routes
-        app.post('/steps/assignStep',verifySession,function(req,res){
+        app.post('/steps/assignStep',function(req,res){
             console.log("Request received to create step");
             stepController.assignStep(req,res);
         });
