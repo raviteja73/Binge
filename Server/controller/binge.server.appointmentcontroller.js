@@ -16,7 +16,7 @@ exports.createAppointment=function(req,res) {
     UserAppointments.findOne({_id: req.body.username}).exec(function (err, doc) {
         if (err) {
             console.log("Error: \n" + err);
-            res.status(500).send({message: "Error: \n" + err});
+            res.status(500).send({message: "Error: \n" + err,resultCode:-1});
         } else if (doc == null) {
             console.log("Creating appointment...");
             UserAppointments.update({_id: req.body.username}, {$addToSet: {supporterAppointments: {_id: req.body.user,userAppointments: appointmentDetails}}}, {upsert: true}, function (err, result) {
@@ -25,13 +25,13 @@ exports.createAppointment=function(req,res) {
                     res.status(500).send({message:"Error: \n" + err,resultCode:-1});
                 }else if (result.nModified == 1 || result.upserted) {
                     console.log("Appointment Created");
-                    userController.find({_id:req.body.username},{"details.fcmToken":1},function(err,tokenResult){
+                    userController.find({_id:req.body.user},{"details.fcmToken":1},function(err,tokenResult){
                         if(err){
                             console.log("Error");
                         }else if(tokenResult) {
                             console.log("Sending notification");
                             var fcmCli = new FCM(serverKey);
-                            var content = "Appointment Created";
+                            var content = "Appointment is created";
                             var payload = {
                                 to: tokenResult[0]["details"]["fcmToken"],
                                 priority: 'high',
@@ -42,7 +42,7 @@ exports.createAppointment=function(req,res) {
                             };
                             fcmCli.send(payload, function (err, deliveryResult) {
                                 if (err) {
-                                    console.log("Error while sending token for " + tokenResult[0]["_id"]);
+                                    console.log("Error while sending token for " + tokenResult[0]["_id"]+"\n"+err);
                                 } else if (deliveryResult) {
                                     console.log("Notification sent for " + tokenResult[0]["_id"]);
                                     notificationController.find({_id: tokenResult[0]["_id"]}, function (err, result) {
@@ -117,17 +117,6 @@ exports.createAppointment=function(req,res) {
     });
 };
 exports.getAllAppointments=function(req,res){
-    if(req.body.role=="supporter"){
-        UserAppointments.find({_id:req.body.username},{_id:0,__v:0,"supporterAppointments.userAppointments._id":0},function(err,result){
-            if(err){
-                console.log("Error: \n"+ err);
-                res.status(500).send({message:"Error: \n"+ err,resultCode:-1});
-            }else if(result){
-                console.log("Retrieved appointments");
-                res.status(200).send({message:"Retrieved appointments",resultCode:1,result:result[0]});
-            }
-        });
-    }else if(req.body.role=="user"){
         UserAppointments.find({"supporterAppointments._id":req.body.username},{"supporterAppointments.$.userAppointments":1},function(err,result){
             if(err){
                 console.log("Error: \n"+ err);
@@ -137,25 +126,25 @@ exports.getAllAppointments=function(req,res){
                 res.status(200).send({message:"Retrieved appointments",resultCode:1,result:result[0]});
             }
         });
-    }
+};
+
+exports.getAllUserAppointments=function(req,res) {
+        UserAppointments.find({_id: req.body.username}, {
+            _id: 0,
+            __v: 0,
+            "supporterAppointments.userAppointments._id": 0
+        }, function (err, result) {
+            if (err) {
+                console.log("Error: \n" + err);
+                res.status(500).send({message: "Error: \n" + err, resultCode: -1});
+            } else if (result) {
+                console.log("Retrieved appointments");
+                res.status(200).send({message: "Retrieved appointments", resultCode: 1, result: result[0]});
+            }
+        });
 };
 
 exports.editAppointment=function(req,res){
-    if(req.body.role =="supporter"){
-        console.log("Request received from supporter");
-        UserAppointments.update({_id:req.body.username,"supporterAppointments._id":req.body.user,"supporterAppointments.userAppointments._id":req.body.date+" "+req.body.time},{$set:{'supporterAppointments.$.userAppointments.0.status':req.body.status}},function(err,result){
-            if(err){
-                console.log("Error: \n"+ err);
-                res.status(500).send({message:"Error: \n"+ err,resultCode:-1});
-            }else if(result.nModified == 1){
-                console.log("Changes made to appointment");
-                res.status(200).send({message:"Changes made to the appointment",resultCode:1});
-            }else if(result.nModified == 0){
-                console.log("No changes made to appointment");
-                res.status(200).send({message:"No changes made to the appointment",resultCode:0});
-            }
-        });
-    }else if(req.body.role =="user"){
         console.log("Request received from user");
         UserAppointments.update({"supporterAppointments._id":req.body.username,"supporterAppointments.userAppointments._id":req.body.date+" "+req.body.time},{$set:{'supporterAppointments.$.userAppointments.0.notes':req.body.notes}},function(err,result){
             if(err){
@@ -169,7 +158,22 @@ exports.editAppointment=function(req,res){
                 res.status(200).send({message:"No changes made to the appointment",resultCode:0});
             }
         });
-    }
+};
+
+exports.editUserAppointment=function(req,res){
+    console.log("Request received from supporter");
+    UserAppointments.update({_id:req.body.username,"supporterAppointments._id":req.body.user,"supporterAppointments.userAppointments._id":req.body.date+" "+req.body.time},{$set:{'supporterAppointments.$.userAppointments.0.status':req.body.status}},function(err,result){
+        if(err){
+            console.log("Error: \n"+ err);
+            res.status(500).send({message:"Error: \n"+ err,resultCode:-1});
+        }else if(result.nModified == 1){
+            console.log("Changes made to appointment");
+            res.status(200).send({message:"Changes made to the appointment",resultCode:1});
+        }else if(result.nModified == 0){
+            console.log("No changes made to appointment");
+            res.status(200).send({message:"No changes made to the appointment",resultCode:0});
+        }
+    });
 };
 
 exports.deleteAppointment=function(req,res){

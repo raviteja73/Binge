@@ -11,7 +11,7 @@ var today = new Date().getMonth()+1+"/"+new Date().getDate()+"/"+new Date().getF
 var token="",id="";
 
 exports.getNotifications=function(req,res){
-    notificationController.find({_id:req.body.username,"notifications.type":{$in:['Daily','Weekly','Appointment','Challenge','Steps']}},{_id:0,__v:0,"notifications.type":0,"notifications._id":0},function(err,result){
+    notificationController.find({_id:req.body.username},{"notifications.type":1,"notifications.$.content":1,"notifications.$.sentAt":1},function(err,result){
         if(err){
             console.log("Error: \n"+err);
             res.status(500).send({message:"Error: \n"+err,resultCode:-1});
@@ -78,17 +78,3 @@ exports.motivationalMessages=function(){
         }
     });
 };
-exports.getMotivationalMessages=function(req,res){
-    notificationController.find({_id:req.body.username,"notifications.type":"Message"},{_id:0,__v:0,"notifications.type":0,"notifications._id":0},function(err,result){
-        if(err){
-            console.log("Error: \n"+err);
-            res.status(500).send({message:"Error: \n"+err,resultCode:-1});
-        }else if(!result.length){
-            console.log("No results");
-            res.status(200).send({message:"No notifications",resultCode:0});
-        }else if(result.length){
-            console.log("Motivational Messages retrieved");
-            res.status(200).send({message:"Motivational messages retrieved",result:result,resultCode:1});
-        }
-    }) ;
-}

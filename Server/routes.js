@@ -8,6 +8,7 @@ var appointmentController=require('./controller/binge.server.appointmentcontroll
 var stepController=require('./controller/binge.server.stepscontroller');
 var challengeController=require('./controller/binge.server.challengecontroller');
 var notificationController=require('./controller/binge.server.notificationcontroller');
+var progressController=require('./controller/binge.server.progresscontroller');
 
 var jwt = require('jsonwebtoken');
 var cryptojs = require('crypto-js');
@@ -15,19 +16,22 @@ var cron=require('node-schedule');
 
 module.exports = {
     configure: function (app) {
-        //var date = new Date(2016, 10, 28, 22, 00, 0);
-        cron.scheduleJob('29 14 * * *', function(){
+
+        //scheduler to monitor daily and weekly activities
+        cron.scheduleJob('25 00 * * *', function(){
             console.log("Cron Job");
-            dailyActivityController.statusCheck();
+            dailyActivityController.dailyStatusCheck();
+            weeklyActivityController.weeklyStatusCheck();
         });
 
-        cron.scheduleJob('46 21 * * *',function(){
+        //scheduler to send ,motivational messages
+        cron.scheduleJob('18 00 * * *',function(){
             console.log("Cron Job");
             notificationController.motivationalMessages();
         });
 
         //create user route
-        app.post('/user/createUser', function (req, res) {
+        app.post('/user/createUser',verifySession, function (req, res) {
             userController.createUser(req, res);
         });
         //validate user route
@@ -35,152 +39,221 @@ module.exports = {
             userController.validateUser(req, res);
         });
 
+        //validate user route
         app.get('/user/validateUser', function (req, res) {
             res.render('/');
         });
 
+        //redirect to admin route
         app.get('/redirectAdminPage',function (req,res) {
             res.render('adminhome.ejs',{message:null});
         });
 
+        //redirect to supporter route
         app.get('/redirectSupporterPage',function (req,res) {
             res.render('supporterhome.ejs',{message:req.query.name});
         });
 
-        //get all supporter users route
-        app.post('/user/getAllSupporterUsers', function (req, res) {
+        //get all users under supporter route
+        app.post('/user/getAllSupporterUsers',verifySession, function (req, res) {
             userController.getAllSupporterUsers(req, res);
         });
 
-        app.get('/user/getAllSupporters',function (req, res) {
+        //get all supporters route
+        app.get('/user/getAllSupporters',verifySession,function (req, res) {
             userController.getAllSupporters(req, res);
         });
 
-        app.get('/user/getAllUsers', function (req, res) {
+        //get all users route
+        app.get('/user/getAllUsers',verifySession, function (req, res) {
             userController.getAllUsers(req, res);
         });
 
-        app.post('/user/deleteUser',function(req,res){
+        //delete all users route
+        app.post('/user/deleteUser',verifySession,function(req,res){
             console.log("delete request received");
             userController.deleteUser(req,res);
         });
 
-        app.post('/user/changeSupporter',function(req,res){
+        //change supporter route
+        app.post('/user/changeSupporter',verifySession,function(req,res){
             console.log("update request received");
             userController.changeSupporter(req,res);
         });
 
-        app.post('/user/editPassword',function(req,res){
+        //edit password route
+        app.post('/user/editPassword',verifySession,function(req,res){
             userController.editPassword(req,res);
         });
 
-        app.get('/supporter/getUser', function (req, res) {
+        //get a particular user route
+        app.get('/supporter/getUser',verifySession, function (req, res) {
             res.render('userDetails.ejs');
         });
 
 
-        //Daily activity routes
-        app.post('/activity/dailyActivityLog', function (req, res) {
+        //adding daily activity route
+        app.post('/activity/dailyActivityLog',requireAuthentication, function (req, res) {
             dailyActivityController.dailyActivityLog(req, res);
         });
 
-        app.post('/activity/getDailyActivityLog',function(req,res){
+        //get daily activity route
+        app.post('/activity/getDailyActivityLog',requireAuthentication,function(req,res){
             dailyActivityController.getDailyActivityLog(req, res);
         });
 
-        app.post('/activity/editDailyActivityLog',function(req,res){
+        //supporter get user daily activity route
+        app.post('/activity/getUserDailyActivityLog',verifySession,function(req,res){
+            dailyActivityController.getUserDailyActivityLog(req, res);
+        });
+
+        //edit daily activity route
+        app.post('/activity/editDailyActivityLog',requireAuthentication,function(req,res){
             dailyActivityController.editDailyActivityLog(req, res);
         });
 
-        app.post('/activity/deleteDailyActivityLog',function(req,res){
+        //delete daily activity route
+        app.post('/activity/deleteDailyActivityLog',requireAuthentication,function(req,res){
             dailyActivityController.deleteDailyActivityLog(req, res);
         });
 
         //weekly activity routes
-        app.post('/activity/weeklyActivityLog',function(req,res){
+        app.post('/activity/weeklyActivityLog',requireAuthentication,function(req,res){
             weeklyActivityController.weeklyActivityLog(req,res);
         });
 
-        app.post('/activity/getWeeklyActivityLog',function(req,res){
+        //get weekly activity route
+        app.post('/activity/getWeeklyActivityLog',requireAuthentication,function(req,res){
             weeklyActivityController.getWeeklyActivityLog(req,res);
         });
 
-        app.post('/activity/editWeeklyActivityLog',function(req,res){
+        //supporter get user weekly activity route
+        app.post('/activity/getUserWeeklyActivityLog',verifySession,function(req,res){
+            weeklyActivityController.getUserWeeklyActivityLog(req,res);
+        });
+
+        //edit weekly activity route
+        app.post('/activity/editWeeklyActivityLog',requireAuthentication,function(req,res){
             weeklyActivityController.editWeeklyActivityLog(req,res);
         });
 
-        app.post('/activity/deleteWeeklyActivityLog',function(req,res){
+        //delete weekly activity route
+        app.post('/activity/deleteWeeklyActivityLog',requireAuthentication,function(req,res){
             weeklyActivityController.deleteWeeklyActivityLog(req,res);
         });
 
-        //appointment routes
-        app.post('/appointment/createAppointment',function(req,res){
+        //create appointment route
+        app.post('/appointment/createAppointment',verifySession,function(req,res){
             appointmentController.createAppointment(req,res);
         });
 
-        app.post('/appointment/deleteAppointment',function(req,res){
+        //delete appointment route
+        app.post('/appointment/deleteAppointment',verifySession,function(req,res){
             appointmentController.deleteAppointment(req,res);
         });
 
-        app.post('/appointment/getAllAppointments',function(req,res){
+        //get all appointments route
+        app.post('/appointment/getAllAppointments',requireAuthentication,function(req,res){
             appointmentController.getAllAppointments(req,res);
         });
 
-        app.post('/appointment/editAppointment',function(req,res){
+        //supporter get all appointments route
+        app.post('/appointment/getAllUserAppointments',verifySession,function(req,res){
+            appointmentController.getAllUserAppointments(req,res);
+        });
+
+        //user edit appointments route
+        app.post('/appointment/editAppointment',requireAuthentication,function(req,res){
             appointmentController.editAppointment(req,res);
         });
 
-        //steps routes
-        app.post('/steps/assignStep',function(req,res){
+        //supporter edit appointments route
+        app.post('/appointment/editUserAppointment',verifySession,function(req,res){
+            appointmentController.editUserAppointment(req,res);
+        });
+
+        //assign step route
+        app.post('/steps/assignStep',verifySession,function(req,res){
             console.log("Request received to create step");
             stepController.assignStep(req,res);
         });
 
-        app.post('/steps/getSteps',function(req,res){
+        //get step route
+        app.post('/steps/getSteps',requireAuthentication,function(req,res){
             console.log("Request received to get step");
             stepController.getSteps(req,res);
         });
 
-        app.post('/steps/editStep',function(req,res){
+        //supporter get step route
+        app.post('/steps/getUserSteps',verifySession,function(req,res){
+            console.log("Request received to get step");
+            stepController.getUserSteps(req,res);
+        });
+
+        //edit step route
+        app.post('/steps/editStep',requireAuthentication,function(req,res){
             console.log("Request received to edit step");
             stepController.editStep(req,res);
         });
 
-        app.post('/steps/deleteStep',function(req,res){
+        //supporter edit step route
+        app.post('/steps/editUserStep',verifySession,function(req,res){
+            console.log("Request received to edit step");
+            stepController.editUserStep(req,res);
+        });
+
+        //delete steps route
+        app.post('/steps/deleteStep',verifySession,function(req,res){
             console.log("Request received to delete step");
             stepController.deleteStep(req,res);
         });
 
-        //challenge routes
-        app.post('/challenge/createChallenge',function(req,res){
+        //create challenge route
+        app.post('/challenge/createChallenge',verifySession,function(req,res){
             console.log("Request received to create challenge");
             challengeController.createChallenge(req,res);
         });
 
-        app.post('/challenge/getChallenge',function(req,res){
+        //get challenge route
+        app.post('/challenge/getChallenge',requireAuthentication,function(req,res){
             console.log("Request received to get challenge");
             challengeController.getChallenge(req,res);
         });
 
-        app.post('/challenge/editChallenge',function(req,res){
+        //supporter get challenge route
+        app.post('/challenge/getUserChallenge',verifySession,function(req,res){
+            console.log("Request received to get challenge");
+            challengeController.getUserChallenge(req,res);
+        });
+
+        //edit challenge route
+        app.post('/challenge/editChallenge',requireAuthentication,function(req,res){
             console.log("Request received to edit challenge");
             challengeController.editChallenge(req,res);
         });
 
-        app.post('/challenge/deleteChallenge',function(req,res){
+        //supporter edit challenge route
+        app.post('/challenge/editUserChallenge',verifySession,function(req,res){
+            console.log("Request received to edit challenge");
+            challengeController.editUserChallenge(req,res);
+        });
+
+        //delete challenge route
+        app.post('/challenge/deleteChallenge',verifySession,function(req,res){
             console.log("Request received to create challenge");
             challengeController.deleteChallenge(req,res);
         });
 
         //route to get notifications
-        app.post('/notifications/getNotifications',function(req,res){
+        app.post('/notifications/getNotifications',requireAuthentication,function(req,res){
             console.log("Request received to get notifications");
             notificationController.getNotifications(req,res);
         });
 
-        app.post('/notifications/getMotivationalMessages',function(req,res){
-            console.log("Request received to get notifications");
-            notificationController.getMotivationalMessages(req,res);
+        //route to get progress
+        app.post('/progress/getProgress',requireAuthentication,function(req,res){
+            console.log("Request received to get progress");
+            progressController.getProgress(req,res);
         });
 
         //logout route

@@ -4,7 +4,6 @@
 var DailyActivityLog=require("../models/binge.server.dailyactivityschema");
 var userController=require("../models/binge.server.userschema");
 var notificationController=require("../models/binge.server.notificationschema");
-var notificationSchema=require("../models/binge.server.notificationschema");
 
 var FCM=require('fcm-node');
 var serverKey='AIzaSyBukQqY9x3Ti2KhTjGQWFfRUZ8JCbAqYsg';
@@ -66,6 +65,21 @@ exports.dailyActivityLog=function(req,res){
 };
 
 exports.getDailyActivityLog=function(req,res){
+    DailyActivityLog.find({_id:req.body.username},{_id:0,__v:0},function(err,result){
+        if(err){
+            console.log("Error: \n"+err);
+            res.status(500).send({message:"Error: \n"+err,resultCode:-1});
+        }else if(!result){
+            console.log("Daily activities not found");
+            res.status(404).send({message:"Daily activities not found",resultCode:0});
+        }else if(result){
+            console.log("Daily activities retrieved");
+            res.status(200).send({message:"Daily activities retrieved",resultCode:1,result:result[0]});
+        }
+    });
+};
+
+exports.getUserDailyActivityLog=function(req,res){
     DailyActivityLog.find({_id:req.body.username},{_id:0,__v:0},function(err,result){
         if(err){
             console.log("Error: \n"+err);
@@ -145,7 +159,7 @@ exports.deleteDailyActivityLog=function(req,res){
     }
 };
 
-exports.statusCheck=function(){
+exports.dailyStatusCheck=function(){
     var today=new Date().getMonth()+1+"/"+new Date().getDate()+"/"+new Date().getFullYear();
     DailyActivityLog.find({$or:[{"foodActivityLog.date":today},{"physicalActivityLog.date":today}]},{_id:1},function(err,result){
        if(err){
