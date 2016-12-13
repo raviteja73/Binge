@@ -78,7 +78,8 @@ exports.createUser = function (req, res) {
                         }
                     }else if(result){
                         console.log("User created");
-                        res.status(201).render("adminhome.ejs",{message:null,resultCode:1});
+                        res.status(201).redirect("/redirectAdminPage");
+                        //res.status(201).render("adminhome.ejs",{message:null,resultCode:1});
                     }
                 });
             }
@@ -128,7 +129,9 @@ exports.validateUser = function (req, res) {
             }
         }else {
             console.log("User doesn't exist.Unauthorized to login");
-            res.status(401).send({message:"User doesn't exist",resultCode:-1});
+            req.session.credsVerify = false;
+            res.status(401).redirect('/invalidLogin');
+            //res.status(401).send({message:"User doesn't exist",resultCode:-1});
         }
     });
 };
@@ -136,7 +139,7 @@ exports.getAllUsers = function (req, res) {
     BingeUser.find({role: "user"}, {
         username: 1,
         "details.supporter": 1,
-        "details.startdate": 1
+        "details.startDate": 1
     }, function (err, result) {
         if(err){
             if(err.name=="ValidationError"){
@@ -179,7 +182,7 @@ exports.getAllSupporterUsers = function (req, res) {
     tomorrow=date.getMonth()+1+"/"+date.getDate()+"/"+date.getFullYear();
     BingeUser.find({"details.supporter": req.body.username, role: "user"}, {
         username: 1,
-        "details.startdate": 1
+        "details.startDate": 1
     }, function (err, usersResult) {
         if(err){
             if(err.name=="ValidationError"){
@@ -217,7 +220,8 @@ exports.changeSupporter=function(req,res){
             res.status(500).send({message:"Error: \n"+err,resultCode:-1});
         }else if(result.nModified==1){
             console.log("User details updated");
-            res.status(200).send({message:"User details updated",resultCode:1});
+            res.status(200).redirect("/redirectAdminPage");
+            //res.status(200).send({message:"User details updated",resultCode:1});
         }else if(result.nModified==0){
             console.log("User details not updated");
             res.status(200).send({message:"User details not updated",resultCode:0});

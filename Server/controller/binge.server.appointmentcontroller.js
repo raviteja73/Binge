@@ -129,11 +129,7 @@ exports.getAllAppointments=function(req,res){
 };
 
 exports.getAllUserAppointments=function(req,res) {
-        UserAppointments.find({_id: req.body.username}, {
-            _id: 0,
-            __v: 0,
-            "supporterAppointments.userAppointments._id": 0
-        }, function (err, result) {
+        UserAppointments.find({_id:req.body.username},{_id:0,__v:0,"supporterAppointments.userAppointments._id":0}, function (err, result) {
             if (err) {
                 console.log("Error: \n" + err);
                 res.status(500).send({message: "Error: \n" + err, resultCode: -1});

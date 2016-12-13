@@ -162,6 +162,11 @@ module.exports = {
             appointmentController.getAllUserAppointments(req,res);
         });
 
+        //supporter get all appointments route
+        app.post('/appointment/getUserAppointments',verifySession,function(req,res){
+            appointmentController.getAllAppointments(req,res);
+        });
+
         //user edit appointments route
         app.post('/appointment/editAppointment',requireAuthentication,function(req,res){
             appointmentController.editAppointment(req,res);
@@ -173,7 +178,7 @@ module.exports = {
         });
 
         //assign step route
-        app.post('/steps/assignStep',verifySession,function(req,res){
+        app.post('/steps/assignStep',function(req,res){
             console.log("Request received to create step");
             stepController.assignStep(req,res);
         });
@@ -251,7 +256,7 @@ module.exports = {
         });
 
         //route to get progress
-        app.post('/progress/getProgress',function(req,res){
+        app.post('/progress/getProgress',requireAuthentication,function(req,res){
             console.log("Request received to get progress");
             progressController.getProgress(req,res);
         });
@@ -262,6 +267,17 @@ module.exports = {
             res.redirect('/');
         });
 
+        app.get('/invalidLogin', function (req, res) {
+            if(req.session.credsVerify==false){
+                req.session.credsVerify = true;
+                res.render('index.ejs',{message:"User does not exist",resultCode:-1});
+            }
+            else {
+                res.redirect('/');
+            }
+
+        });
+
         //session management route
         app.get('/', function (req, res) {
             if (req.session.username && req.session.role == "supporter") {
@@ -270,7 +286,7 @@ module.exports = {
                 res.render('adminhome.ejs',{message:null});
             } else {
                 req.session.username = req.body.username;
-                res.render('index.ejs');
+                res.render('index.ejs',{message:null});
             }
         });
     }
