@@ -6,19 +6,30 @@ var Steps=require("../models/binge.server.stepschema");
 var Tasks=require('../models/binge.server.taskschema');
 
 exports.assignStep=function(req,res){
-    Tasks.find({_id:req.body.task},{_id:0},function(err,result){
+    Tasks.find({_id:req.body.step},{_id:0},function(err,result){
         if(err){
             console.log("Error: \n"+err);
             res.status(500).send({message:"Error: \n"+err,resultCode:-1});
         }else if(result){
             console.log(result[0]['tasks']);
-            Steps.update({_id:req.body.username},{$addToSet:{steps:{tasks:result[0]['tasks'],name:req.body.task}}},{upsert:true},function(err,result){
+            Steps.update({_id:req.body.username},{$addToSet:{steps:{tasks:result[0]['tasks'],name:req.body.step}}},{upsert:true},function(err,result){
                 if(err){
                     console.log("Error: \n"+err);
                     res.status(500).send({message:"Error: \n"+err,resultCode:-1});
                 }else if(result.upserted || result.nModified==1){
                     console.log("Step created");
-                    res.status(201).send({message:"Step created",resultCode:1});
+                    UserController.update({_id:req.body.username},{$set:{"details.currentStep":req.body.step}},function(err,result){
+                        if(err){
+                            console.log("Error: \n"+err);
+                            res.status(500).send({message:"Error: \n"+err,resultCode:-1});
+                        }else if(result.upserted || result.nModified==1) {
+                            console.log("Step details updated in user record");
+                            res.status(201).send({message:"Step created",resultCode:1});
+                        }else{
+                            console.log("Step details not updated in user record");
+                            res.status(201).send({message:"Step created but details not updated in user record",resultCode:0});
+                        }
+                    });
                 }else if(result.nModified==0){
                     console.log("Step not created");
                     res.status(409).send({message:"Step not created",resultCode:0});

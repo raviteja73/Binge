@@ -7,18 +7,23 @@ var weeklyActivityController=require('./controller/binge.server.weeklyactivityco
 var appointmentController=require('./controller/binge.server.appointmentcontroller');
 var stepController=require('./controller/binge.server.stepscontroller');
 var challengeController=require('./controller/binge.server.challengecontroller');
+var notificationController=require('./controller/binge.server.notificationcontroller');
 
 var jwt = require('jsonwebtoken');
 var cryptojs = require('crypto-js');
 var cron=require('node-schedule');
 
-
 module.exports = {
     configure: function (app) {
         //var date = new Date(2016, 10, 28, 22, 00, 0);
-        cron.scheduleJob('47 16 * * *', function(){
+        cron.scheduleJob('29 14 * * *', function(){
             console.log("Cron Job");
             dailyActivityController.statusCheck();
+        });
+
+        cron.scheduleJob('46 21 * * *',function(){
+            console.log("Cron Job");
+            notificationController.motivationalMessages();
         });
 
         //create user route
@@ -165,6 +170,17 @@ module.exports = {
         app.post('/challenge/deleteChallenge',function(req,res){
             console.log("Request received to create challenge");
             challengeController.deleteChallenge(req,res);
+        });
+
+        //route to get notifications
+        app.post('/notifications/getNotifications',function(req,res){
+            console.log("Request received to get notifications");
+            notificationController.getNotifications(req,res);
+        });
+
+        app.post('/notifications/getMotivationalMessages',function(req,res){
+            console.log("Request received to get notifications");
+            notificationController.getMotivationalMessages(req,res);
         });
 
         //logout route

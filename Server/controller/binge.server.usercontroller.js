@@ -101,22 +101,30 @@ exports.validateUser = function (req, res) {
                 console.log("Supporter authorized to login");
                 res.redirect('/redirectSupporterPage?name='+result[0].details.name);
             }else {
-                console.log("User Authorized to login");
-                var userData = JSON.stringify(req.body);
-                var encryptedData = cryptoJS.AES.encrypt(userData, 'ut@clt_NC@28262_usa').toString();
-                var token = jwt.sign({
-                    token: encryptedData
-                }, 'jwtHS256');
-                if (token) {
-                    res.header('Auth', token).status(200).send({
-                        'Status': 'Login Successful',
-                        'token': token,
-                        'username': req.body.username,
-                        'resultCode':1
-                    });
-                } else {
-                    res.status(401).send({message:"Unauthorized",resultCode:-1});
-                }
+                BingeUser.update({_id:req.body.username},{$set:{"details.deviceId":req.body.deviceId,"details.fcmToken":req.body.fcmToken}},function(err,result){
+                 if(err){
+                     console.log("Error Occurred: \n"+err);
+                     res.status(500).send({message:"Error: \n"+err,resultCode:-1});
+                 }else if(result){
+                     console.log("deviceId updated");
+                     var userData = JSON.stringify(req.body);
+                     var encryptedData = cryptoJS.AES.encrypt(userData, 'ut@clt_NC@28262_usa').toString();
+                     var token = jwt.sign({
+                         token: encryptedData
+                     }, 'jwtHS256');
+                     if (token) {
+                         console.log("User Authorized to login");
+                         res.header('Auth', token).status(200).send({
+                             'Status': 'Login Successful',
+                             'token': token,
+                             'username': req.body.username,
+                             'resultCode':1
+                         });
+                     } else {
+                         res.status(401).send({message:"Unauthorized",resultCode:-1});
+                     }
+                 }
+                });
             }
         }else {
             console.log("User doesn't exist.Unauthorized to login");

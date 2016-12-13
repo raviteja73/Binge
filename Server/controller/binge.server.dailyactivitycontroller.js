@@ -3,6 +3,12 @@
  */
 var DailyActivityLog=require("../models/binge.server.dailyactivityschema");
 var userController=require("../models/binge.server.userschema");
+var notificationController=require("../models/binge.server.notificationschema");
+var notificationSchema=require("../models/binge.server.notificationschema");
+
+var FCM=require('fcm-node');
+var serverKey='AIzaSyBukQqY9x3Ti2KhTjGQWFfRUZ8JCbAqYsg';
+var today = new Date().getMonth()+1+"/"+new Date().getDate()+"/"+new Date().getFullYear();
 
 exports.dailyActivityLog=function(req,res){
     //unique id for sub-documents
@@ -146,11 +152,48 @@ exports.statusCheck=function(){
            console.log("Error: \n"+err);
        }else if(result){
            console.log("Result.\n");
-           userController.find({_id:{$nin:result},role:"user"},{_id:1},function(err,result){
+           userController.find({_id:{$nin:result},role:"user"},{_id:1},function(err,userResult){
                if(err){
                    console.log("Error: \n"+err);
-               }else if(result){
-                   console.log(result);
+               }else if(userResult){
+                   for(var i=0;i<userResult.length;i++){
+                       console.log(userResult[i]["_id"]);
+                       userController.find({_id:userResult[i]["_id"]},{"details.fcmToken":1},function(err,tokenResult){
+                           if(err){
+                               console.log("Error");
+                           }else if(tokenResult){
+                               console.log("Sending notification");
+                               var fcmCli = new FCM(serverKey);
+                               var content="Reminder to monitor your daily activities";
+                               var payload = {
+                                   to :tokenResult[0]["details"]["fcmToken"],
+                                   priority : 'high',
+                                   notification: {
+                                       title : 'Self Monitor',
+                                       body :content
+                                   }
+                               };
+                               fcmCli.send(payload, function (err, deliveryResult) {
+                                   if(err){
+                                       console.log("Error while sending token for "+tokenResult[0]["_id"]);
+                                   }else if(deliveryResult){
+                                       console.log("Notification sent for "+tokenResult[0]["_id"]);
+                                       /*notificationController.find({_id:tokenResult[0]["_id"]},function(err,result){
+                                         if(err){
+                                             console.log("Error while saving notification.\n"+err);
+                                         }else if(result){*/
+                                       notificationController.update({_id:tokenResult[0]["_id"]},{$push:{notifications:{type:"Daily",content:content,sentAt:today}}},{upsert:true},function(err,result){
+                                           if(err){
+                                               console.log("Error while saving notification.\n"+err);
+                                           }else if(result){
+                                               console.log("Notification saved");
+                                           }
+                                       });
+                                   }
+                               });
+                           }
+                       });
+                   }
                }
            });
        }
