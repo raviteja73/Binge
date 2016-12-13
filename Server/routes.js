@@ -251,7 +251,7 @@ module.exports = {
         });
 
         //route to get progress
-        app.post('/progress/getProgress',requireAuthentication,function(req,res){
+        app.post('/progress/getProgress',function(req,res){
             console.log("Request received to get progress");
             progressController.getProgress(req,res);
         });

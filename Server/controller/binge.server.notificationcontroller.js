@@ -36,7 +36,7 @@ exports.motivationalMessages=function(){
             console.log("No users found");
         }else if(userResult.length){
             for(var i=0;i<userResult.length;i++){
-                filter = { step: { $in: ["step2"] } };
+                filter = { step: { $in: [userResult[i]["details"]["currentStep"]] } };
                 UserController.find({_id:userResult[i]["_id"]},{"details.fcmToken":1,"details.currentStep":1},function(err,tokenResult){
                     if(err){
                         console.log("Error");
