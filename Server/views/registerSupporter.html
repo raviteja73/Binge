@@ -3,93 +3,43 @@
 <head ng-app="admin">
     <meta charset="UTF-8">
     <title>Supporter Registration</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
-    <style>
-        body
-        {
-            padding-top:80px;
-            background-repeat:no-repeat;
-            background-size:cover;
-            position: relative;
-        }
 
-        .header{
-            height:5%;
-            position: absolute;
-        }
-
-        #login-page{
-
-        }
-
-        .input-field{
-            margin:1%;
-        }
-
-
-    </style>
 </head>
 <body ng-controller="SupporterReg-ctrl">
-<div class="container">
-    <div id="login-page" class="row">
-        <div class="col s12 z-depth-6 card-panel">
-            <form class="login-form" action="/user/createUser" method="post">
-                <div class="row">
-                    <div class="input-field col s12 center">
-                        <h6 class="center login-form-text">Create Supporter</h6>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <i class="mdi-social-person-outline prefix"></i>
-                        <input class="validate" id="email" type="text" name="username" required="" aria-required="true">
-                        <label for="email" data-error="wrong" data-success="right" class="center-align">Username</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <i class="mdi-action-lock-outline prefix"></i>
-                        <input id="password" name="password" type="password" required="" aria-required="true">
-                        <label for="password">Password</label>
-                    </div>
-                </div>
-                <div class="row margin">
-                    <div class="input-field col s12">
-                        <i class="mdi-social-person-outline prefix"></i>
-                        <input id="name" type="text" name="name" required="" aria-required="true">
-                        <label for="name">Name</label>
-                    </div>
-                </div>
-                <div class="row margin">
-                    <div class="input-field col s12">
-                        <i class="mdi-communication-call prefix"></i>
-                        <input id="mobile" type="text" name="mobilenumber" required="" aria-required="true">
-                        <label for="mobile">Mobile</label>
-                    </div>
-                </div>
-                <div class="row margin" hidden>
-                    <div class="input-field col s12">
-                        <i class="mdi-communication-call prefix"></i>
-                        <input id="role" type="text" name="role" value="supporter">
-                        <label for="role">Role</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <button type='submit' class="btn waves-effect waves-light col s12">Create</button>
-                    </div>
-                    <div class="input-field col s12">
-                        <button ng-click="onCancel()" class="btn #757575 grey darken-1 waves-effect waves-light col s12">Cancel</button>
-                    </div>
-                </div>
+<md-content class="md-no-momentum" layout-padding>
+    <md-card layout-padding layout="row">
+        <form flex="90" action="/user/createUser" method="post">
+            <md-input-container class="md-icon-float md-block">
+                <md-icon md-svg-src="../views/img/ic_person_outline_black_24px.svg"></md-icon>
+                <input ng-model="user.username" name="username" type="text" placeholder="Username">
+            </md-input-container>
 
-            </form>
-        </div>
-    </div>
-</div>
+            <md-input-container class="md-block">
+                <md-icon md-svg-src="../views/img/ic_lock_outline_black_24px.svg"></md-icon>
+                <input ng-model="user.password" name="password" type="text" placeholder="password">
+            </md-input-container>
 
+            <md-input-container class="md-block">
+                <md-icon md-svg-src="../views/img/ic_person_outline_black_24px.svg" class="email"></md-icon>
+                <input ng-model="user.name" name="name" type="text" placeholder="Name">
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <md-icon md-svg-src="../views/img/ic_phone_black_24px.svg" class="email"></md-icon>
+                <input ng-model="user.mobilenumber" name="mobilenumber" type="text" placeholder="Contact">
+            </md-input-container>
+
+            <input type="text" name="role" value="supporter" hidden>
+
+            <md-button class="md-primary md-raised" type="submit">Create</md-button>
+            <md-button class="md-raised" ng-click="onCancel()">Cancel</md-button>
+        </form>
+
+    </md-card>
+
+
+</md-content>
 </body>
 </html>

@@ -8,34 +8,27 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-aria.js"></script>
     <script src="views/js/angular-modal-service/dst/angular-modal-service.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-datatables/0.5.5/angular-datatables.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
     <script type="text/javascript" src="views/js/moment/min/moment.min.js"></script>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
     <script type="text/javascript" src="views/js/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
     <script type="text/javascript" src="views/js/angular-bootstrap-datetimepicker/src/js/datetimepicker.templates.js"></script>
+
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-datatables/0.5.5/css/angular-datatables.css">
     <link rel="stylesheet" href="views/js/angular-bootstrap-datetimepicker/src/css/datetimepicker.css"/>
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
 
     <style>
-        body{
-            padding-top: 80px;
-            /*background: url('./img/background2.png');*/
-        }
-
-        nav{
-            background-color: #00cca3;
-        }
-
         .card {
             /* Add shadows to create the "card" effect */
             box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
@@ -84,85 +77,83 @@
 
 </head>
 <body ng-controller="supporter-ctrl as showCase">
-<nav class="navbar navbar-fixed-top" style="background-color: #00cca3">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/redirectSupporterPage">WHP</a>
-        </div>
-        <ul class="nav navbar-nav pull-right">
-            <li class="nav-button pull-right"><a href="/user/logout">Logout</a></li>
-            <li class="nav-button pull-right" ng-click="onAppointmentSelect()"><a>Appointments</a></li>
-        </ul>
+<md-toolbar layout="row">
+    <div class="md-toolbar-tools">
+        <h2>WHP</h2>
+        <span flex></span>
+        <md-button ng-click="logout()">Logout</md-button>
     </div>
-</nav>
+</md-toolbar>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div>
-                            <table datatable="" dt-options="showCase.dtOptions" dt-columns="showCase.dtColumns" dt-instance="showCase.dtInstance" class="row-border hover"></table>                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="container-fluid">
-                    <h5><strong>Appointments</strong></h5>
-                    <h6><em><strong>Today</strong></em></h6>
-                    <div data-ng-repeat="appoint in todayAppoint">
-                        <span><strong>{{appoint.user}}</strong></span><br>
-                        <label>Appointment Time</label>
-                        <span>{{appoint.time}}</span>
-                    </div>
+<div layout="row" layout-margin layout-padding>
+    <div flex="60" flex-offset="5">
+        <md-card layout="row" layout-wrap md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
+            <div flex="100">
+                <div>
+                    <table datatable="" dt-options="showCase.dtOptions" dt-columns="showCase.dtColumns" dt-instance="showCase.dtInstance" class="row-border hover"></table>
                 </div>
             </div>
-        </div>
+        </md-card>
     </div>
+    <span flex></span>
+    <div flex="30" flex-offset="10">
+        <md-card layout-padding>
+            <md-subheader class="md-no-sticky"><strong>Appointments Today</strong></md-subheader>
+            <md-list-item data-ng-repeat="appoint in todayAppoint">
+                <div>
+                    <span><strong>{{appoint.username}}</strong></span><br>
+                    <label>Appointment Time</label>
+                    <span>{{appoint.time}}</span>
+                </div>
+                <md-divider></md-divider>
+            </md-list-item>
+        </md-card>
+    </div>
+
+
+
+
+    <md-divider></md-divider>
 </div>
 
 <!-- The actual modal template, just a bit o bootstrap -->
 <script type="text/ng-template" id="modal.html">
-    <div class="modal fade">
-        <div class="modal-dialog modal-lg">
+    <div class="modal fade" layout="row" layout-padding>
+        <div class="modal-dialog modal-lg" flex>
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" ng-click="close()" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
-                <div class="modal-body">
-                    <form class="form-horizontal" action="/appointment/createAppointment" method="post" role="form">
+                <div class="modal-body" layout="row">
+                    <form flex="30" flex-offset="5" class="form-horizontal" action="/appointment/createAppointment" method="post" role="form">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Username</label>
-                            <div class="col-sm-10">
-                                <p>{{user}}</p>
+                            <div>
+                                <div class="text-center text-capitalize"><strong>{{user}}</strong></div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="date" class="col-sm-2 control-label">Date</label>
-                            <div class="col-sm-10">
+                            <label for="date" class="control-label">Date</label>
+                            <div>
                                 <input type="text" class="form-control" id="date" value="{{date}}" ng-model="date">
-
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="time" class="col-sm-2 control-label">Time</label>
-                            <div class="col-sm-10">
+                            <label for="time" class="control-label">Time</label>
+                            <div>
                                 <input type="text" class="form-control" id="time" value="{{time}}" ng-model="time">
 
                             </div>
                         </div>
                     </form>
-                    <div style="margin-left: 80px">
-                        <datetimepicker data-ng-model="data.date" data-on-set-time="onTimeSet(newDate, oldDate)"></datetimepicker>
+
+                    <div flex="70" flex-offset="10" style="border: solid 1px gray">
+                        <datetimepicker data-ng-model="data.date" data-on-set-time="onTimeSet(newDate, oldDate)" data-before-render="beforeRender($view, $dates, $leftDate, $upDate, $rightDate)" data-datetimepicker-config="{minView:'hour' }"></datetimepicker>
                     </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" ng-click="close()" class="btn" data-dismiss="modal">OK</button>
-                    <button type="button" ng-click="cancel()" class="btn">Cancel</button>
+                    <button type="button" ng-click="cancel()" class="btn" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>
@@ -171,7 +162,7 @@
 
 
 <script>
-    angular.module('supporter',['datatables','ngRoute','ngAnimate', 'angularModalService', 'ui.bootstrap.datetimepicker']).
+    angular.module('supporter',['datatables','ngRoute','ngAnimate', 'angularModalService','ui.bootstrap.datetimepicker', 'ngMaterial','ngAria']).
             factory('mod',function () {
         var user = null;
         var supporter = null;
@@ -204,16 +195,35 @@
             mod.setSup(role_user);
         }
 
+        $scope.logout = function () {
+            location.href = '/user/logout';
+        }
+
         $http({
             method:"POST",
-            url:"/appointment/getAllAppointments",
+            url:"/appointment/getAllUserAppointments",
             data:{'username':role_user,"role":"supporter"}
         }).then(function successCallback(response){
-            $scope.appointment = response.data.result.appointments;
-            var date = new Date();
-            var today = date.getMonth()+1 + "/" + date.getDate() + "/" + date.getFullYear();
-            $scope.todayAppoint = $filter("filter")($scope.appointment, {date:today});
-            console.log($scope.todayAppoint);
+            //console.log(response.data.result.supporterAppointments[0].userAppointments);
+            $scope.appointment = [];
+            if(response.data.result!=undefined){
+                var sup = response.data.result.supporterAppointments;
+                var app = [];
+                for(i=0;i<sup.length;i++){
+                    var user = sup[i]._id;
+                    var userApp = sup[i].userAppointments;
+                    for(j=0;j<userApp.length;j++){
+                        userApp[j].username = user;
+                        $scope.appointment.push(userApp[j]);
+                    }
+
+                }
+                console.log($scope.appointment);
+                var date = new Date();
+                var today = date.getMonth()+1 + "/" + date.getDate() + "/" + date.getFullYear();
+                $scope.todayAppoint = $filter("filter")($scope.appointment, {date:today});
+                console.log(response.data.result);
+            }
         }, function errorCallback(response){
             $window.alert(response.status);
         });
@@ -262,6 +272,7 @@
                 modal.element.modal();
                 modal.close.then(function(result) {
                     $scope.message = "You said " + result;
+                    $window.location.reload(true);
                 });
             });
             // Delete some data and call server to make changes...
@@ -317,9 +328,10 @@
             });
         }
     })
-            .controller('ModalController',function($scope, close, mod, $http, $window) {
+            .controller('ModalController',function($scope, close, mod, $http, $window, $filter) {
                 $scope.date=null;
                 $scope.time=null;
+                $scope.months = {"Jan":"01","Feb":"02","Mar":"03","Apr":"04","May":"05","Jun":"06","Jul":"07","Aug":"08","Sep":"09","Oct":"10","Nov":"11","Dec":"12"}
                 function formatDate(date) {
                     var hours = date.getHours();
                     var minutes = date.getMinutes();
@@ -330,11 +342,65 @@
                     var strTime = hours + ':' + minutes + ' ' + ampm;
                     return strTime;
                 }
+
+                $scope.beforeRender = function ($view, $dates, $leftDate, $upDate, $rightDate) {
+                    if($view=="hour"){
+                        var s = $upDate.display.split(' ');
+                        var date = $scope.months[s[0]]+"/"+s[1].substring(0,s[1].length-1)+"/"+s[2];
+                        $scope.bookedAppoint = $filter("filter")($scope.appointment, {date:date});
+                        if($scope.bookedAppoint!=null){
+                            for(i=0;i<$scope.bookedAppoint.length;i++){
+                                var used_slot = $scope.bookedAppoint[i].time;
+                                var day = used_slot.split(" ")[1];
+                                var t =  used_slot.split(":")[0];
+                                var index=0;
+                                if(day=="am"){
+                                    index = parseInt(t);
+                                }
+                                else {
+                                    index = parseInt(t)+12;
+                                }
+                                $dates[index].selectable = false;
+                            }
+                        }
+                    }
+                    else {
+                        var date = new Date();
+                        var today = date.getMonth()+1 + "/" + date.getDate() + "/" + date.getFullYear();
+                        console.log($dates);
+                        var month = $scope.months[$upDate.display.split("-")[1]];
+                        console.log(month);
+                        if(parseInt(month)==date.getMonth()+1){
+                            for(i=0;i<$dates.length;i++){
+                                if(parseInt($dates[i].display)<date.getDate() && $dates[i].selectable!=false){
+                                    $dates[i].selectable = false;
+                                }
+                            }
+                        }
+                    }
+                }
+
                 $scope.onTimeSet = function (newDate, oldDate) {
                     $scope.date = newDate.getMonth()+1 + "/" + newDate.getDate() + "/" + newDate.getFullYear();
                     $scope.time = formatDate(newDate);
                 }
                 $scope.user = mod.getUser();
+                var supporter = mod.getSup();
+                $http({
+                    method:"POST",
+                    url:"/appointment/getAllUserAppointments",
+                    data:{'username':supporter,"role":"supporter"}
+                }).then(function successCallback(response){
+                    //console.log(response.data.result.supporterAppointments[0].userAppointments);
+                    if(response.data.result!=undefined){
+                        $scope.appointment = response.data.result.supporterAppointments[0].userAppointments;
+                        //$scope.todayAppoint = $filter("filter")($scope.appointment, {date:today});
+                        console.log($scope.appointment);
+                    }
+                }, function errorCallback(response){
+                    $window.alert(response.status);
+                });
+
                 $scope.close = function (result) {
                     console.log("hello");
                     var supporter = mod.getSup();
@@ -351,6 +417,10 @@
                     }
                     close(result, 500); // close, but give 500ms for bootstrap to animate
                 };
+
+                $scope.cancel = function () {
+                    modal.close;
+                }
             });
 
 </script>

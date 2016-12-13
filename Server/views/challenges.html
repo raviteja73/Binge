@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="userDetails">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../views/css/challenge.css">
+    <style>
+        .challenges{
+            min-height: 100px;
+            margin:20px;
+            padding: 15px;
+
+        }
+
+        .twt-wrapper .panel-body {
+            max-height:650px;
+            overflow:auto;
+        }
+        .twt-wrapper .media-list .media img {
+            width:64px;
+            height:64px;
+            border:2px solid #e5e7e8;
+        }
+        .twt-wrapper .media-list .media {
+            border-bottom:1px dashed #efefef;
+            margin-bottom:25px;
+        }
+    </style>
+</head>
+<body ng-controller="userChallenge-ctrl">
+<!--div layout="row">
+    <div flex="80" flex-offset="5">
+        <md-card layout="row" class="challenges" data-ng-repeat="ichallenge in challenges">
+            <div flex="70">
+                <p>{{ichallenge.createdOn}}</p><br>
+                <p style="font-size: medium">
+                    {{ichallenge.challenge}}
+                </p>
+            </div>
+            <span flex></span>
+            <div flex="20">
+                <md-button aria-label="Edit" data-ng-click="challengeEdit(ichallenge.challengeNumber,ichallenge.challenge)"><span class="glyphicon glyphicon-pencil"></span></md-button>
+                <p style="margin-left: 10px">{{ichallenge.status}}</p>
+            </div>
+
+        </md-card>
+        <div layout="row">
+            <div flex="80" flex-offset="5" class="widget-area no-padding blank">
+                <div class="status-upload">
+                    <form>
+                        <textarea placeholder="Post a Challenge" ng-model="challenge"></textarea>
+
+                        <button type="submit" data-ng-click="create()" class="btn btn-success">Post</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div-->
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- TWEET WRAPPER START -->
+            <div class="twt-wrapper">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        Challenges
+                    </div>
+                    <div class="panel-body">
+                        <form>
+                            <textarea class="form-control" ng-model="challenge" placeholder="Create a new challenge" rows="3"></textarea>
+                            <br />
+                            <button type="submit" data-ng-click="create()" class="btn btn-primary btn-sm pull-right">Post</button>
+                        </form>
+                        <div class="clearfix"></div>
+                        <hr />
+                        <ul class="media-list">
+                            <li class="media" data-ng-repeat="ichallenge in challenges">
+                                <div class="media-body">
+                                     <span class="text-muted pull-right" style="cursor: pointer" data-ng-click="challengeEdit(ichallenge.challengeNumber,ichallenge.challenge)">
+                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        </span><br>
+                                    <span class="text-muted pull-right">
+                                            <small class="text-muted">{{ichallenge.status}}</small>
+                                        </span>
+                                    <p>
+                                        {{ichallenge.challenge}}
+                                    </p>
+                                    <span class="text-muted">
+                                            <small class="text-muted">{{ichallenge.createdOn}}</small>
+
+                                    </span>
+                                    <span class="text-muted">
+                                            <small class="text-muted">{{ichallenge.status}}</small>
+                                        </span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- TWEET WRAPPER END -->
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="edit.html">
+    <md-dialog flex="30">
+
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Edit Challenge</h2>
+            </div>
+        </md-toolbar>
+        <form ng-cloak layout="column" action="/challenge/editChallenge" method="post" layout-padding>
+            <span flex></span>
+            <md-dialog-content flex="60">
+
+                <input type="text" name="username" value="{{user.username}}" hidden>
+                <input type="text" name="challengeNumber" value="{{user.challengeNumber}}" hidden>
+                <input type="text" name="role" value="supporter" hidden>
+                <md-input-container class="md-icon-float md-block">
+                    <textarea ng-model="user.challenge" name="challenge" value="{{user.challenge}}" type="text"></textarea>
+                </md-input-container>
+
+            </md-dialog-content>
+
+            <md-dialog-actions layout="row">
+                <span flex></span>
+                <md-button ng-click="cancel()">
+                    Cancel
+                </md-button>
+
+                <md-button type="submit">
+                    Update
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>
+</body>
+</html>

@@ -8,14 +8,15 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-aria.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-datatables/0.5.5/angular-datatables.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-datatables/0.5.5/css/angular-datatables.css">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <!-- Optional theme -->
@@ -27,7 +28,7 @@
             margin: auto;
         }
 
-        .register{
+        #register{
             width: 60%;
             margin: 5px;
         }
@@ -48,12 +49,9 @@
             text-decoration-color: pink;
             text-decoration: none;
         }
-        body{
-            padding-top: 80px;
-            /*background: url('./img/background2.png');*/
-        }
 
-        nav{
+        #nav-bar{
+            margin-bottom: 20px;
             background-color: #00cca3;
         }
 
@@ -66,33 +64,16 @@
             font-size: 1.2em;
         }
 
-
-
-        .card {
-            /* Add shadows to create the "card" effect */
-            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-            transition: 0.3s;
-        }
-
-        /* On mouse-over, add a deeper shadow */
-        .card:hover {
-            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-        }
-
-        /* Add some padding inside the card container */
-        .container-fluid {
-            padding: 2px 16px;
-        }
-
         #supporter-table{
             margin:auto;
         }
 
         .responsive-img{
             width:40%;
-            height: 50%;
+            height: 40%;
             padding: 5px;
             border: none;
+            border-radius: 50%;
         }
 
         .btn-effects{
@@ -101,48 +82,88 @@
     </style>
 
 </head>
-<body ng-controller="admin-ctrl as showCase">
-<nav class="navbar navbar-fixed-top" style="background-color: #00cca3">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/">WHP</a>
-        </div>
-        <ul class="nav navbar-nav pull-right">
-            <li class="nav-button pull-right"><a href="/user/logout">Logout</a></li>
-        </ul>
+<body ng-controller="admin-ctrl as showCase" >
+<md-toolbar layout="row">
+    <div class="md-toolbar-tools">
+        <h2>WHP</h2>
+        <span flex></span>
+        <md-button ng-click="logout()">Logout</md-button>
     </div>
-</nav>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="col-md-6 tab" id="user" ng-click="tabTransition('user')" style="color:black; font-size: 16px;">User</div>
-                <div class="col-md-6 tab" id="supporter" ng-click="tabTransition('supporter')" style="color:black; font-size: 16px;">Supporter</div>
-                <div class="container-fluid">
-                    <div class="row">
-                        <div>
-                            <div ng-show="show==1"><table id="user-table" datatable="" dt-options="showCase.dtOptionsUser" dt-columns="showCase.dtColumnsUser" dt-instance="showCase.dtInstance" class="row-border hover"></table></div>
-                            <div ng-show="show==2"><table id="supporter-table" datatable="" dt-options="showCase.dtOptionsSup" dt-columns="showCase.dtColumnsSup" dt-instance="showCase.dtInstance" class="row-border hover"></table></div>
-                        </div>
-                    </div>
+</md-toolbar>
+
+<div layout="row" layout-padding>
+    <div flex="60" flex-offset="5">
+        <md-card layout="row" layout-wrap md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
+            <div flex="50" class="tab" id="user" ng-click="tabTransition('user')" style="color:black; font-size: 16px;">User</div>
+            <div flex="50" class="tab" id="supporter" ng-click="tabTransition('supporter')" style="color:black; font-size: 16px;">Supporter</div>
+            <div flex="100">
+
+                <div>
+                    <div ng-show="show==1"><table id="user-table" datatable="" dt-options="showCase.dtOptionsUser" dt-columns="showCase.dtColumnsUser" dt-instance="showCase.dtInstance" class="row-border hover"></table></div>
+                    <div ng-show="show==2"><table id="supporter-table" datatable="" dt-options="showCase.dtOptionsSup" dt-columns="showCase.dtColumnsSup" dt-instance="showCase.dtInstance" class="row-border hover"></table></div>
                 </div>
 
             </div>
-        </div>
-        <div class="col-md-4 register-block text-center">
+        </md-card>
+    </div>
+    <span flex></span>
+    <div flex="30" class="register-block text-center">
+        <div layout="column">
             <% if (message!=null) { %>
             <p class="error" style="color: #bf360c">
                 <%= message.value %>
             </p>
             <%} %>
-            <div ng-view></div>
+            <div ng-view layout-margin></div>
         </div>
+
     </div>
 </div>
 
+<script type="text/ng-template" id="edit.html">
+    <md-dialog aria-label="Mango (Fruit)" flex="30">
+
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Assign Supporter</h2>
+            </div>
+        </md-toolbar>
+        <form ng-cloak layout="column" action="/user/changeSupporter" method="post" layout-padding>
+            <span flex></span>
+            <md-dialog-content flex="60">
+                <md-input-container class="md-icon-float md-block">
+                    <input ng-model="user.username" type="text" disabled style="color: black">
+                </md-input-container>
+
+                <input type="text" name="username" value={{user.username}} hidden>
+
+                <md-input-container class="md-block">
+                    <md-select name="supporter" ng-model="user.supporter"placeholder="Select">
+                        <md-option ng-repeat="option in data" value="{{option.details.name}}">
+                            {{option.details.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </md-dialog-content>
+
+            <md-dialog-actions layout="row">
+                <span flex></span>
+                <md-button ng-click="cancel()">
+                    Cancel
+                </md-button>
+
+                <md-button type="submit">
+                    Update
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>
+
+
 <script>
-    angular.module('admin',['datatables','ngRoute']).
-    config(function($routeProvider){
+    angular.module('admin',['datatables','ngRoute','ngMaterial','ngAria']).
+    config(function($routeProvider,$mdThemingProvider){
         $routeProvider
                 .when('/user', {
                     templateUrl: '../views/registerUser.html',
@@ -160,9 +181,8 @@
 
 
     }).
-    controller('admin-ctrl', function ($scope, $http, $window, $compile, DTOptionsBuilder, DTColumnBuilder) {
+    controller('admin-ctrl', function ($scope, $http, $window, $compile, DTOptionsBuilder, DTColumnBuilder, $mdDialog) {
         $scope.show=1;
-        //if(sessionStorage.getItem('user'))
         var role_user = JSON.parse('<%- JSON.stringify(message) %>');
         if(role_user){
             console.log(role_user);
@@ -172,7 +192,6 @@
             console.log("going");
             location.href='#/';
         }
-
         jQuery(document).ready(function() {
             jQuery('table').
             on('mouseover', 'tr', function(event) {
@@ -182,6 +201,10 @@
                 jQuery(this).find(".btn-effects").css("visibility","hidden");
             });
         });
+
+        $scope.logout = function () {
+            location.href = '/user/logout';
+        }
 
         $('#user').addClass("active");
         $scope.tabTransition = function (role) {
@@ -229,19 +252,32 @@
                 .withDataProp('result')
                 .withPaginationType('full_numbers')
                 .withDisplayLength(5)
-                //.withOption('createdRow', createdRow)
+        //.withOption('createdRow', createdRow)
 
         vm.dtColumnsSup = [
             DTColumnBuilder.newColumn('username').withTitle('Username'),
             DTColumnBuilder.newColumn('details.name').withTitle('Name'),
             //DTColumnBuilder.newColumn(null).notSortable()
-                   // .renderWith(actionsHtml)
+            // .renderWith(actionsHtml)
         ];
 
         function edit(person) {
             event.stopPropagation();
-            //vm.message = 'You are trying to edit the row: ' + JSON.stringify(person);
             console.log(vm.users[person]);
+            $mdDialog.show({
+                controller: DialogController,
+                templateUrl: 'edit.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose:true,
+                locals : {
+                    user : person
+                }
+            })
+                    .then(function(answer) {
+                        $scope.status = 'You said the information was "' + answer + '".';
+                    }, function() {
+                        $scope.status = 'You cancelled the dialog.';
+                    });
             // Edit some data and call server to make changes...
             // Then reload the data so that DT is refreshed
             vm.dtInstance.reloadData();
@@ -251,22 +287,26 @@
             //event.stopPropagation();
             //vm.message = 'You are trying to remove the row: ' + JSON.stringify(person);
             console.log(vm.users[person]);
-            $http({
-                method:"POST",
-                url:"/user/deleteUser",
-                data:{'username':person}
-            }).then(function successCallback(response){
-                console.log(response);
-                //$window.alert("record deleted");
-                var r = confirm("Are u sure!");
-                if (r == true) {
-                    $window.reload(true);
-                } else {
+            var confirm = $mdDialog.confirm()
+                    .title('Would you like to delete this user?')
+                    .ariaLabel('Lucky day')
+                    .ok('Delete it')
+                    .cancel('Cancel');
+            //$mdDialog.clickOutsideToClose(true)
+            $mdDialog.show(confirm).then(function() {
+                $http({
+                    method:"POST",
+                    url:"/user/deleteUser",
+                    data:{'username':person}
+                }).then(function successCallback(response){
+                    $window.location.reload(true);
+                }, function errorCallback(response){
+                    $window.alert(response.status);
+                });
+            }, function() {
 
-                }
-            }, function errorCallback(response){
-                $window.alert(response.status);
             });
+
             // Delete some data and call server to make changes...
             // Then reload the data so that DT is refreshed
             vm.dtInstance.reloadData();
@@ -287,6 +327,25 @@
                     '</button></div>';
         }
 
+        function DialogController($scope, $mdDialog, user) {
+            $scope.user = {};
+            $scope.user.username = user;
+            $http({
+                method:"GET",
+                url:"/user/getAllSupporters",
+            }).then(function successCallback(response){
+                console.log(response);
+                $scope.data = response.data.result;
+            }, function errorCallback(response){
+                $window.alert(response.status);
+            });
+
+            $scope.cancel = function() {
+                $mdDialog.cancel();
+            };
+
+        }
+
     })
             .controller('UserReg-ctrl', function($scope, $http, $window){
                 $http({
@@ -302,6 +361,7 @@
                     $(".error").hide();
                     location.href='#/';
                 }
+
             })
 
             .controller('SupporterReg-ctrl', function($scope, $http){

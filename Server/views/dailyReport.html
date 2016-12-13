@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <title>Daily Report</title>
     <style>
-        body{
-            top:130px;
-        }
         .card {
             /* Add shadows to create the "card" effect */
             box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
@@ -25,39 +22,24 @@
         }
     </style>
 </head>
-<body ng-controller="userDaily-ctrl">
-    <div class="container-fluid">
-        <div class="row">
-            <div class='col-md-offset-6 col-sm-6'>
-                <div class="form-group">
-                    <div class='input-group date' id='datetimepicker1'>
-                        <input type='text' class="form-control" />
-                        <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                    </div>
+<body ng-controller="userDaily-ctrl" background="http://www.webdesignhot.com/wp-content/uploads/2013/10/Abstract-Blue-Color-Design-Vector-Background-Graphic.jpg">
+    <div>
+        <div class="profile" layout="row" layout-wrap>
+            <md-card flex-offset="5" flex="40" data-ng-repeat="dat in userdata">
+                <div layout-margin>
+                    <h4 class="text-center"><strong>{{dat.date}}</strong></h4>
+                    <h5><strong><u>Food Activity:</u></strong></h5>
+                    <label><em>Time</em></label>
+                    <span>{{dat.FoodActivity.time}}</span><br>
+                    <h5><strong><u>Physical Activity:</u></strong></h5>
+                    <label><em>Time</em></label>
+                    <span>{{dat.PhysicalActivity.time}}</span><br>
+                    <label>Activity</label>
+                    <span>{{dat.PhysicalActivity.activity}}</span><br>
+                    <label>Duration</label>
+                    <span>{{dat.PhysicalActivity.duration}}</span><br>
                 </div>
-            </div>
-        </div>
-    </div>
-        <div class="row profile">
-            <div class="card">
-                <div class="container-fluid">
-                    <div class="row">
-                        <h5 class="text-center"><strong>10 Nov</strong></h5>
-                        <h6><strong><u>Food Activity:</u></strong></h6>
-                        <label class="text-center"><em>Time</em></label>
-                        <span>10 AM</span><br>
-                        <h6><strong><u>Physical Activity:</u></strong></h6>
-                        <label class="text-center"><em>Time</em></label>
-                        <span>10 AM</span><br>
-                        <label>Activity</label>
-                        <span>Cardio</span><br>
-                        <label>Duration</label>
-                        <span>1 hour</span><br>
-                    </div>
-                </div>
-            </div>
+            </md-card>
         </div>
     </div>
 
