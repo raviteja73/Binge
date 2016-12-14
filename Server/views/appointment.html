@@ -12,7 +12,7 @@
                     <md-content layout="row" class="md-padding">
                         <div flex="50">
                             <md-radio-group ng-model="data.group3" >
-                                <div data-ng-repeat="val in completed">
+                                <div data-ng-repeat="val in upcomingAppointments">
                                     <md-card layout-padding>
                                         <md-radio-button ng-value="val._id">
                                             <div><span><em>Date   </em></span><span>{{val.date}}</span></div>
@@ -37,7 +37,7 @@
                 <md-tab label="Completed">
                     <md-content class="md-padding" flex="60" flex-offset="20">
                         <md-card>
-                            <md-list-item data-ng-repeat="value in completed">
+                            <md-list-item data-ng-repeat="value in completedAppointments">
                                 <div>
                                     <br><div><span style="font-size: medium"><strong>Date:</strong></span><span style="font-size: medium">{{ value.date }} </span></div><br>
                                     <div><span style="font-size: medium"><strong>Time:</strong></span><span style="font-size: medium">{{ value.time }} </span></div><br>

@@ -28,36 +28,6 @@
     </style>
 </head>
 <body ng-controller="userChallenge-ctrl">
-<!--div layout="row">
-    <div flex="80" flex-offset="5">
-        <md-card layout="row" class="challenges" data-ng-repeat="ichallenge in challenges">
-            <div flex="70">
-                <p>{{ichallenge.createdOn}}</p><br>
-                <p style="font-size: medium">
-                    {{ichallenge.challenge}}
-                </p>
-            </div>
-            <span flex></span>
-            <div flex="20">
-                <md-button aria-label="Edit" data-ng-click="challengeEdit(ichallenge.challengeNumber,ichallenge.challenge)"><span class="glyphicon glyphicon-pencil"></span></md-button>
-                <p style="margin-left: 10px">{{ichallenge.status}}</p>
-            </div>
-
-        </md-card>
-        <div layout="row">
-            <div flex="80" flex-offset="5" class="widget-area no-padding blank">
-                <div class="status-upload">
-                    <form>
-                        <textarea placeholder="Post a Challenge" ng-model="challenge"></textarea>
-
-                        <button type="submit" data-ng-click="create()" class="btn btn-success">Post</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div-->
 
 <div class="container-fluid">
     <div class="row">
@@ -85,7 +55,7 @@
                                     <span class="text-muted pull-right">
                                             <small class="text-muted">{{ichallenge.status}}</small>
                                         </span>
-                                    <p>
+                                    <p class="text-capitalize">
                                         {{ichallenge.challenge}}
                                     </p>
                                     <span class="text-muted">

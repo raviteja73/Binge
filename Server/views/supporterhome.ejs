@@ -255,6 +255,8 @@
         vm.dtColumns = [
             DTColumnBuilder.newColumn('username').withTitle('Username'),
             DTColumnBuilder.newColumn('details.startDate').withTitle('Start Date'),
+            DTColumnBuilder.newColumn('details.currentStep').withTitle('Current Step').notVisible(),
+            DTColumnBuilder.newColumn('details.supporter').withTitle('Supporter').notVisible(),
             DTColumnBuilder.newColumn(null).notSortable()
                     .renderWith(actionsHtml)
         ];

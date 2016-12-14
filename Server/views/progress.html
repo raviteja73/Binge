@@ -14,52 +14,29 @@
     </style>
 </head>
 <body ng-controller="userProgress-ctrl">
-<div class="container">
-    <div class="row">
-        <div class="col-md-8">
+<div layout="row">
+        <div flex="40">
             <div id="container">
 
             </div>
         </div>
-        <div class="col-md-4">
-            <bold><p>Current Step : </p></bold>
-            <button class="btn btn-success">Promote To Next Step</button>
+        <span flex></span>
+        <div flex="40"style="margin: auto">
+            <div>
+                <div layout="row"><p class="text-uppercase"><em>Current Step : </em><span flex></span><strong>{{currStep}}</strong></p></bold></div>
+                <div layout="row"><p class="text-uppercase"><em>Status : </em><span flex></span><strong>{{stepinfo.status}}</strong></p></bold></div>
+                <div><p class="text-uppercase"><em>Started on : </em><strong>{{stepinfo.startedOn}}</strong></p></bold></div>
+                <div layout="row">
+                    <button class="btn btn-success" ng-model="next" ng-disabled="next" data-ng-click="promote()">Promote To Next Step</button>
+                </div>
+            </div>
+
+
 
         </div>
-    </div>
 </div>
 <script>
-    var bar = new ProgressBar.Circle(container, {
-        color: '#aaa',
-        // This has to be the same size as the maximum width to
-        // prevent clipping
-        strokeWidth:4,
-        trailWidth: 1,
-        easing: 'easeInOut',
-        duration: 1400,
-        text: {
-            autoStyleContainer: false
-        },
-        from: { color: '#aaa', width: 1 },
-        to: { color: '#333', width: 4 },
-        // Set default step function for all animate calls
-        step: function(state, circle) {
-            circle.path.setAttribute('stroke', state.color);
-            circle.path.setAttribute('stroke-width', state.width);
 
-            var value = Math.round(circle.value() * 100);
-            if (value === 0) {
-                circle.setText('');
-            } else {
-                circle.setText(value+"%");
-            }
-
-        }
-    });
-    bar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
-    bar.text.style.fontSize = '2rem';
-
-    bar.animate(0.5);  // Number from 0.0 to 1.0
 </script>
 </body>
 </html>

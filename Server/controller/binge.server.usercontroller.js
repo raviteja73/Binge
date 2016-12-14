@@ -182,7 +182,9 @@ exports.getAllSupporterUsers = function (req, res) {
     tomorrow=date.getMonth()+1+"/"+date.getDate()+"/"+date.getFullYear();
     BingeUser.find({"details.supporter": req.body.username, role: "user"}, {
         username: 1,
-        "details.startDate": 1
+        "details.startDate": 1,
+        "details.currentStep": 1,
+        "details.supporter": 1
     }, function (err, usersResult) {
         if(err){
             if(err.name=="ValidationError"){

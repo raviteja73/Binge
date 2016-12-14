@@ -2,15 +2,70 @@
 <html lang="en" ng-app="userDetails">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Weekly Report</title>
+    <style>
+        .card {
+            /* Add shadows to create the "card" effect */
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            transition: 0.3s;
+            width:40%;
+        }
+
+        /* On mouse-over, add a deeper shadow */
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        }
+
+        /* Add some padding inside the card container */
+        .container-fluid {
+            padding: 2px 16px;
+        }
+
+        span{
+            margin:0 5px;
+        }
+
+    </style>
 </head>
-<body>
-<div class="container-fluid">
-    <div class="row profile">
-        <div>
-            <p>Weekly</p>
-        </div>
+<body ng-controller="userWeekly-ctrl">
+<div>
+    <div class="profile" layout="row" layout-wrap>
+        <md-card flex-offset="5" flex="40" data-ng-repeat="dat in weeklyActivity">
+            <md-toolbar layout="row">
+                <div class="md-toolbar-tools">
+                    <h4 flex-offset="25"><strong>{{dat.startDate}}-{{dat.endDate}}</strong></h4>
+                </div>
+            </md-toolbar>
+            <div layout-margin>
+                <div layout="row">
+                    <p flex="40"><label><em>Week Number:</em></label>
+                        <span>{{dat.weekNumber}}</span></p>
+                    <p flex="40"><label><em>Binges:</em></label>
+                        <span>{{dat.binges}}</span></p><br>
+                </div>
+                <div layout="row">
+                    <p flex="40"><label><em>Active Days:</em></label>
+                        <span>{{dat.physicallyActiveDays}}</span></p>
+                    <p flex="40"><label><em>Good Days:</em></label>
+                        <span>{{dat.goodDays}}</span></p><br>
+                </div>
+                <div layout="row">
+                    <label><em>Events:</em></label>
+                    <span>{{dat.events}}</span><br><br>
+                </div>
+                <div layout="row">
+                    <label><em>Fruit and Vegetable Count:</em></label>
+                    <span>   {{dat.fruitVegetableCount}}</span><br>
+                </div>
+                <div layout="row">
+                    <label><em>Weight:</em></label>
+                    <span>   {{dat.weight}}</span><br>
+                </div>
+            </div>
+        </md-card>
+
     </div>
 </div>
+
 </body>
 </html>

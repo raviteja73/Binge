@@ -20,24 +20,61 @@
         .container-fluid {
             padding: 2px 16px;
         }
+
+        span{
+            margin:0 5px;
+        }
+
     </style>
 </head>
-<body ng-controller="userDaily-ctrl" background="http://www.webdesignhot.com/wp-content/uploads/2013/10/Abstract-Blue-Color-Design-Vector-Background-Graphic.jpg">
+<body ng-controller="userDaily-ctrl">
     <div>
         <div class="profile" layout="row" layout-wrap>
-            <md-card flex-offset="5" flex="40" data-ng-repeat="dat in userdata">
+            <md-card flex-offset="5" flex="40" data-ng-repeat="dat in foodActivity">
+                <md-toolbar layout="row">
+                    <div class="md-toolbar-tools">
+                        <h4 flex-offset="35"><strong>{{dat.date}}</strong></h4>
+                    </div>
+                </md-toolbar>
                 <div layout-margin>
-                    <h4 class="text-center"><strong>{{dat.date}}</strong></h4>
-                    <h5><strong><u>Food Activity:</u></strong></h5>
-                    <label><em>Time</em></label>
-                    <span>{{dat.FoodActivity.time}}</span><br>
+                    <h5><strong><u>Food Activity:</u></strong></h5><br>
+                    <div layout="row">
+                        <p flex="40"><label><em>Food:</em></label>
+                        <span>{{dat.food}}</span></p>
+                        <p flex="40"><label><em>Drink:</em></label>
+                        <span>{{dat.drinks}}</span></p><br>
+                    </div>
+                    <div layout="row">
+                        <p flex="40"><label><em>Place:</em></label>
+                            <span>{{dat.place}}</span></p>
+                        <p flex="40"><label><em>Time:</em></label>
+                            <span>{{dat.time}}</span></p><br>
+                    </div>
+                    <div layout="row">
+                        <label><em>Laxating</em></label>
+                        <span>{{dat.laxating}}</span><br><br>
+                    </div>
+                    <div layout="row">
+                        <label><em>Notes  </em></label>
+                        <span>   {{dat.notes}}</span><br>
+                    </div>
+                </div>
+            </md-card>
+
+            <md-card flex-offset="5" flex="40" data-ng-repeat="dat in physicalActivity">
+                <md-toolbar layout="row">
+                    <div class="md-toolbar-tools">
+                        <h4 flex-offset="35"><strong>{{dat.date}}</strong></h4>
+                    </div>
+                </md-toolbar>
+                <div layout-margin>
                     <h5><strong><u>Physical Activity:</u></strong></h5>
                     <label><em>Time</em></label>
-                    <span>{{dat.PhysicalActivity.time}}</span><br>
+                    <span>{{dat.time}}</span><br>
                     <label>Activity</label>
-                    <span>{{dat.PhysicalActivity.activity}}</span><br>
+                    <span>{{dat.activity}}</span><br>
                     <label>Duration</label>
-                    <span>{{dat.PhysicalActivity.duration}}</span><br>
+                    <span>{{dat.duration}}</span><br>
                 </div>
             </md-card>
         </div>

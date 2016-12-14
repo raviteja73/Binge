@@ -4,32 +4,28 @@
     <meta charset="UTF-8">
     <title>Details</title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.min.js"></script>
     <script type="text/javascript" src="../views/js/moment/min/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/js/bootstrap-datetimepicker.min.js"></script>
     <script type="text/javascript" src="../views/js/progressbar.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-aria.js"></script>
     <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
     <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
-    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="../views/css/userstyle.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.43/css/bootstrap-datetimepicker.min.css">
 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
 </head>
 <body ng-controller="userDet-ctrl">
 <md-toolbar layout="row">
     <div class="md-toolbar-tools">
         <h2>WHP</h2>
-        <!--h6>Home</h6-->
+        <a href="/redirectSupporterPage?name={{user.details.supporter}}" style="font-size: medium;margin-left:30px">Home</a>
         <span flex></span>
-        <md-button ng-click="logout()">Logout</md-button>
+        <md-button flex="10" ng-click="logout()">Logout</md-button>
     </div>
 </md-toolbar>
 <div class="container-fluid">
@@ -100,7 +96,7 @@
                 })
                 .when('/weekly', {
                     templateUrl: '../views/weeklyReport.html',
-                    //controller: 'SupporterReg-ctrl'
+                    controller: 'userWeekly-ctrl'
                 })
                 .when('/challenges', {
                     templateUrl: '../views/challenges.html',
@@ -124,7 +120,6 @@
             .controller('userDet-ctrl', function ($scope, $window, $http) {
                 location.href="#daily"
                 $scope.user = JSON.parse($window.sessionStorage.getItem("curUser"));
-                console.log($window.localStorage);
                 console.log($scope.user);
                 $scope.logout = function () {
                     location.href = '/user/logout';
@@ -141,96 +136,95 @@
                     data:{username:$scope.user.username}
                 }).then(function successCallback(response) {
                     console.log(response.data);
-                    $scope.userdata = [{
-                        date:'10 Nov',
-                        FoodActivity:{
-                            time:"10:00AM"
-                        },
-                        PhysicalActivity:{
-                            time:"2.00PM",
-                            activity:"cardio",
-                            duration:"1 hour"
-
-                        }
-
-                    },{
-                        date:'10 Nov',
-                        FoodActivity:{
-                            time:"10:00AM"
-                        },
-                        PhysicalActivity:{
-                            time:"2.00PM",
-                            activity:"cardio",
-                            duration:"1 hour"
-
-                        }
-                    },{
-                        date:'10 Nov',
-                        FoodActivity:{
-                            time:"10:00AM"
-                        },
-                        PhysicalActivity:{
-                            time:"2.00PM",
-                            activity:"cardio",
-                            duration:"1 hour"
-
-                        }
-                    },{
-                        date:'10 Nov',
-                        FoodActivity:{
-                            time:"10:00AM"
-                        },
-                        PhysicalActivity:{
-                            time:"2.00PM",
-                            activity:"cardio",
-                            duration:"1 hour"
-
-                        }
-                    }
-                    ];
+                    $scope.foodActivity = response.data.result.foodActivityLog;
+                    $scope.physicalActivity = response.data.result.physicalActivityLog;
                 },function errorCallback(response) {
                     $window.alert("error");
-                });
-
-                $(function () {
-                    $('#datetimepicker1').datetimepicker();
                 });
             })
-            .controller('userProgress-ctrl', function ($scope,$http,$window) {
+
+            .controller('userWeekly-ctrl', function ($scope, $http) {
                 $http({
                     method:"POST",
-                    url:'/steps/getSteps',
+                    url:'/activity/getUserWeeklyActivityLog',
                     data:{username:$scope.user.username}
                 }).then(function successCallback(response) {
-                    console.log($scope.response);
+                    console.log(response.data);
+                    $scope.weeklyActivity = response.data.result.weeklyLog;
+                },function errorCallback(response) {
+                    $window.alert("error");
+                });
+            })
+
+            .controller('userProgress-ctrl', function ($scope,$http,$window,$filter) {
+                $http({
+                    method:"POST",
+                    url:'/steps/getUserSteps',
+                    data:{username:$scope.user.username}
+                }).then(function successCallback(response) {
+                    $scope.currStep = $scope.user.details.currentStep;
+                    $scope.next = true;
+                    var info = response.data.result[0].steps;
+                    $scope.stepinfo = $filter("filter")(info, {name:$scope.currStep})[0];
+                    console.log($scope.stepinfo);
+                    if($scope.stepinfo.status=="Waiting"){
+                        $scope.next = false;
+                    }
+                    $scope.completed = parseInt($scope.currStep.charAt($scope.currStep.length-1));
+                    var percent = $scope.completed/8;
+
+                    var bar = new ProgressBar.Circle(container, {
+                        color: '#aaa',
+                        // This has to be the same size as the maximum width to
+                        // prevent clipping
+                        strokeWidth:4,
+                        trailWidth: 1,
+                        easing: 'easeInOut',
+                        duration: 1400,
+                        text: {
+                            autoStyleContainer: false
+                        },
+                        from: { color: '#aaa', width: 1 },
+                        to: { color: '#333', width: 4 },
+                        // Set default step function for all animate calls
+                        step: function(state, circle) {
+                            circle.path.setAttribute('stroke', state.color);
+                            circle.path.setAttribute('stroke-width', state.width);
+
+                            var value = Math.round(circle.value() * 100);
+                            if (value === 0) {
+                                circle.setText('');
+                            } else {
+                                circle.setText(value+"%");
+                            }
+
+                        }
+                    });
+                    bar.text.style.fontFamily = '"Raleway", Helvetica, sans-serif';
+                    bar.text.style.fontSize = '2rem';
+
+                    bar.animate(percent);  // Number from 0.0 to 1.0
                 },function errorCallback(response) {
                     $window.alert("error");
                 });
 
-                $scope.editAppoint = function () {
-                    $http({
-                        method:"POST",
-                        url:'/appointment/editAppointment',
-                        data:{username:$scope.user.username,role:"supporter"}
-                    }).then(function successCallback(response) {
-                        console.log(response.data);
-                        //$scope.userdata = response.data;
-                    },function errorCallback(response) {
-                        $window.alert("error");
-                    });
-                }
-
-                $scope.deleteAppoint = function () {
-                    $http({
-                        method:"POST",
-                        url:'/appointment/deleteAppointment',
-                        data:{username:$scope.user.username,role:"supporter"}
-                    }).then(function successCallback(response) {
-                        console.log(response.data);
-                        //$scope.userdata = response.data;
-                    },function errorCallback(response) {
-                        $window.alert("error");
-                    });
+                $scope.promote = function () {
+                    var count = $scope.completed;
+                    count++;
+                    var next_step = "step"+count;
+                    if($scope.completed<=7){
+                        $http({
+                            method:"POST",
+                            url:'/steps/assignStep',
+                            data:{username:$scope.user.username,step:next_step}
+                        }).then(function successCallback(response) {
+                            console.log(response.data);
+                            $window.location.reload(true);
+                            //$scope.userdata = response.data;
+                        },function errorCallback(response) {
+                            $window.alert("error");
+                        });
+                    }
                 }
 
             })
@@ -291,14 +285,16 @@
                 }
 
             })
-            .controller('userAppointment-ctrl', function ($scope,$http,$window) {
+            .controller('userAppointment-ctrl', function ($scope,$http,$window,$filter) {
                 $http({
                     method:"POST",
                     url:'/appointment/getUserAppointments',
                     data:{username:$scope.user.username}
                 }).then(function successCallback(response) {
                     console.log(response.data);
-                    $scope.completed = response.data.result.supporterAppointments[0].userAppointments;
+                    $scope.allAppointments = response.data.result.supporterAppointments[0].userAppointments;
+                    $scope.completedAppointments = $filter("filter")($scope.allAppointments, {status:"Completed"});
+                    $scope.upcomingAppointments = $filter("filter")($scope.allAppointments, {status:"Created"})
                     //console.log($scope.completed);
                 },function errorCallback(response) {
                     $window.alert("error");
