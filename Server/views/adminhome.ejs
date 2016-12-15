@@ -164,6 +164,30 @@
 <script>
     angular.module('admin',['datatables','ngRoute','ngMaterial','ngAria']).
     config(function($routeProvider,$mdThemingProvider){
+
+        $mdThemingProvider.definePalette('amazingPaletteName', {
+            '50': '#4dffdb',
+            '100': '#33ffd6',
+            '200': '#1affd1',
+            '300': '#00ffcc',
+            '400': '#00e6b7',
+            '500': '#00cca3',
+            '600': '#00b38f',
+            '700': '#00997a',
+            '800': '#008066',
+            '900': '#006652',
+            'A100': '#66ffe0',
+            'A200': '#80ffe5',
+            'A400': '#99ffeb',
+            'A700': '#004d3d',
+            'contrastDefaultColor': 'light'
+        });
+
+
+        $mdThemingProvider.theme('default')
+                .primaryPalette('amazingPaletteName')
+
+
         $routeProvider
                 .when('/user', {
                     templateUrl: '../views/registerUser.html',
@@ -348,6 +372,28 @@
 
     })
             .controller('UserReg-ctrl', function($scope, $http, $window){
+                $scope.submitForm = function () {
+                    $scope.user.role="user";
+                    $http({
+                        method:"POST",
+                        url:"/user/createUser",
+                        data:$scope.user
+                    }).then(function successCallback(response){
+                        $http({
+                            method:"POST",
+                            url:"/steps/assignStep",
+                            data:{username:$scope.user.username,step:"step1"}
+                        }).then(function successCallback(response){
+                            console.log(response);
+                        }, function errorCallback(response){
+                            //$window.alert(response.status);
+                        });
+                        $window.location = '/redirectAdminPage';
+                    }, function errorCallback(response){
+                        console.log(response.data.message.value);
+                        $scope.error = response.data.message.value;
+                    });
+                }
                 $http({
                     method:"GET",
                     url:"/user/getAllSupporters",

@@ -49,7 +49,7 @@ exports.createUser = function (req, res) {
                 res.status(500).send({message:"Error: \n"+err,resultCode:-1});
             } else if (result.length) {
                 console.log("Cannot create this user, as his record already exist");
-                res.status(409).render('adminhome.ejs',{message:{'value':"User already exist", 'role':"user"}});
+                res.status(409).send({message:{'value':"User already exist", 'role':"user"}});
             } else {
                 console.log("creating user.....");
 
@@ -78,8 +78,8 @@ exports.createUser = function (req, res) {
                         }
                     }else if(result){
                         console.log("User created");
-                        res.status(201).redirect("/redirectAdminPage");
-                        //res.status(201).render("adminhome.ejs",{message:null,resultCode:1});
+                        //res.status(201).redirect("/redirectAdminPage");
+                        res.status(201).render("adminhome.ejs",{message:null,resultCode:1});
                     }
                 });
             }

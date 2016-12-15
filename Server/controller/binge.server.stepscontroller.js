@@ -12,6 +12,7 @@ var serverKey='AIzaSyBukQqY9x3Ti2KhTjGQWFfRUZ8JCbAqYsg';
 var today = new Date().getMonth()+1+"/"+new Date().getDate()+"/"+new Date().getFullYear();
 
 exports.assignStep=function(req,res){
+    console.log(req.body);
     Tasks.find({_id:req.body.step},{_id:0},function(err,result){
         if(err){
             console.log("Error: \n"+err);

@@ -21,15 +21,16 @@
 
     </style>
 </head>
-<body ng-controller="UserReg-ctrl">
+<body ng-controller="UserReg-ctrl" ng-cloak>
 
 <md-content class="md-no-momentum" layout-padding>
     <md-card layout-padding layout="row">
-        <form flex="90" action="/user/createUser" method="post">
+        <form flex="90" ng-submit="submitForm()" method="post">
             <md-input-container class="md-icon-float md-block">
                 <label>Username</label>
                 <md-icon md-svg-src="../views/img/ic_person_outline_black_24px.svg"></md-icon>
-                <input ng-model="user.username" name="username" type="text">
+                <input ng-model="user.username" name="username" type="text"><br>
+                <h6 style="color: red;margin-top: 15px">{{error}}</h6>
             </md-input-container>
 
             <md-input-container class="md-block">
@@ -45,8 +46,6 @@
                     </md-option>
                 </md-select>
             </md-input-container>
-
-            <input type="text" name="role" value="user" hidden>
 
 
             <md-button flex flex-offset="10" class="md-primary md-raised" type="submit">Create</md-button>

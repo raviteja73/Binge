@@ -42,7 +42,7 @@
                         <form>
                             <textarea class="form-control" ng-model="challenge" placeholder="Create a new challenge" rows="3"></textarea>
                             <br />
-                            <button type="submit" data-ng-click="create()" class="btn btn-primary btn-sm pull-right">Post</button>
+                            <md-button type="submit" data-ng-click="create()" class="btn btn-primary btn-sm pull-right md-primary md-raised">Post</md-button>
                         </form>
                         <div class="clearfix"></div>
                         <hr />
@@ -62,9 +62,6 @@
                                             <small class="text-muted">{{ichallenge.createdOn}}</small>
 
                                     </span>
-                                    <span class="text-muted">
-                                            <small class="text-muted">{{ichallenge.status}}</small>
-                                        </span>
                                 </div>
                             </li>
                         </ul>

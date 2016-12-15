@@ -67,11 +67,11 @@
                                 <i class="glyphicon glyphicon-calendar"></i>
                                 Appointments </a>
                         </li>
-                        <li>
+                        <!--li>
                             <a href="#settings">
                                 <i class="glyphicon glyphicon-cog"></i>
                                 Settings </a>
-                        </li>
+                        </li-->
                     </ul>
                 </div>
                 <!-- END MENU -->
@@ -88,7 +88,28 @@
     /*var info = JSON.parse();
     console.log(info);*/
     angular.module('userDetails',['ngRoute','ngMaterial','ngAria'])
-            .config(function($routeProvider){
+            .config(function($routeProvider,$mdThemingProvider){
+                $mdThemingProvider.definePalette('amazingPaletteName', {
+                    '50': '#4dffdb',
+                    '100': '#33ffd6',
+                    '200': '#1affd1',
+                    '300': '#00ffcc',
+                    '400': '#00e6b7',
+                    '500': '#00cca3',
+                    '600': '#00b38f',
+                    '700': '#00997a',
+                    '800': '#008066',
+                    '900': '#006652',
+                    'A100': '#66ffe0',
+                    'A200': '#80ffe5',
+                    'A400': '#99ffeb',
+                    'A700': '#004d3d',
+                    'contrastDefaultColor': 'light'
+                });
+
+
+                $mdThemingProvider.theme('default')
+                        .primaryPalette('amazingPaletteName');
         $routeProvider
                 .when('/daily', {
                     templateUrl: '../views/dailyReport.html',
@@ -136,8 +157,14 @@
                     data:{username:$scope.user.username}
                 }).then(function successCallback(response) {
                     console.log(response.data);
-                    $scope.foodActivity = response.data.result.foodActivityLog;
-                    $scope.physicalActivity = response.data.result.physicalActivityLog;
+                    if(response.data.result ==undefined){
+                        $scope.message = "There are no logs to show";
+                    }
+                    else{
+                        $scope.foodActivity = response.data.result.foodActivityLog;
+                        $scope.physicalActivity = response.data.result.physicalActivityLog;
+                    }
+
                 },function errorCallback(response) {
                     $window.alert("error");
                 });
@@ -150,7 +177,12 @@
                     data:{username:$scope.user.username}
                 }).then(function successCallback(response) {
                     console.log(response.data);
-                    $scope.weeklyActivity = response.data.result.weeklyLog;
+                    if(response.data.result ==undefined){
+                        $scope.message = "There are no logs to show";
+                    }
+                    else{
+                        $scope.weeklyActivity = response.data.result.weeklyLog;
+                    }
                 },function errorCallback(response) {
                     $window.alert("error");
                 });
@@ -285,32 +317,48 @@
                 }
 
             })
-            .controller('userAppointment-ctrl', function ($scope,$http,$window,$filter) {
+            .controller('userAppointment-ctrl', function ($scope,$http,$window,$filter,$mdDialog) {
                 $http({
                     method:"POST",
                     url:'/appointment/getUserAppointments',
                     data:{username:$scope.user.username}
                 }).then(function successCallback(response) {
                     console.log(response.data);
-                    $scope.allAppointments = response.data.result.supporterAppointments[0].userAppointments;
-                    $scope.completedAppointments = $filter("filter")($scope.allAppointments, {status:"Completed"});
-                    $scope.upcomingAppointments = $filter("filter")($scope.allAppointments, {status:"Created"})
+                    if(response.data.result!=undefined){
+                        $scope.allAppointments = response.data.result.supporterAppointments[0].userAppointments;
+                        $scope.completedAppointments = $filter("filter")($scope.allAppointments, {status:"Completed"});
+                        $scope.upcomingAppointments = $filter("filter")($scope.allAppointments, {status:"Created"});
+                        if($scope.completedAppointments.length==0){
+                            $scope.message1 = "No Completed Appointments";
+                        }
+                        else if($scope.upcomingAppointments.length==0){
+                            $scope.message2 = "No Upcoming Appointments";
+                        }
+                    }
+                    else{
+                        $scope.message1 = "No Completed Appointments";
+                        $scope.message2 = "No Upcoming Appointments";
+                    }
+
                     //console.log($scope.completed);
                 },function errorCallback(response) {
                     $window.alert("error");
                 });
 
-                $scope.editAppoint = function () {
-                    $http({
-                        method:"POST",
-                        url:'/appointment/editAppointment',
-                        data:{username:$scope.user.username,role:"supporter"}
-                    }).then(function successCallback(response) {
-                        console.log(response.data);
-                        //$scope.userdata = response.data;
-                    },function errorCallback(response) {
-                        $window.alert("error");
-                    });
+                $scope.editAppoint = function (date) {
+                    console.log($scope.data);
+                    if(date){
+                        /*$http({
+                            method:"POST",
+                            url:'/appointment/editUserAppointment',
+                            data:{username:$scope.user.details.supporter,user:$scope.user.username,date:date,time:time,status:"Completed"}
+                        }).then(function successCallback(response) {
+                            console.log(response.data);
+                            //$scope.userdata = response.data;
+                        },function errorCallback(response) {
+                            $window.alert("error");
+                        });*/
+                    }
                 }
 
                 $scope.deleteAppoint = function () {

@@ -118,11 +118,17 @@
 
 <!-- The actual modal template, just a bit o bootstrap -->
 <script type="text/ng-template" id="modal.html">
-    <div class="modal fade" layout="row" layout-padding>
+    <div class="modal fade" layout="row">
         <div class="modal-dialog modal-lg" flex>
             <div class="modal-content">
+                <md-toolbar layout="row">
+                    <div class="md-toolbar-tools">
+                        <h2>Schedule Appointment</h2>
+                        <span flex></span>
+                        <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                </md-toolbar>
                 <div class="modal-header">
-                    <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body" layout="row">
                     <form flex="30" flex-offset="5" class="form-horizontal" action="/appointment/createAppointment" method="post" role="form">
@@ -152,7 +158,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" ng-click="close()" class="btn" data-dismiss="modal">OK</button>
+                    <button type="button" ng-click="close()" class="btn btn-primary" data-dismiss="modal">OK</button>
                     <button type="button" ng-click="cancel()" class="btn" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -162,8 +168,31 @@
 
 
 <script>
-    angular.module('supporter',['datatables','ngRoute','ngAnimate', 'angularModalService','ui.bootstrap.datetimepicker', 'ngMaterial','ngAria']).
-            factory('mod',function () {
+    angular.module('supporter',['datatables','ngRoute','ngAnimate', 'angularModalService','ui.bootstrap.datetimepicker', 'ngMaterial','ngAria'])
+            .config(function($mdThemingProvider){
+                $mdThemingProvider.definePalette('amazingPaletteName', {
+                    '50': '#4dffdb',
+                    '100': '#33ffd6',
+                    '200': '#1affd1',
+                    '300': '#00ffcc',
+                    '400': '#00e6b7',
+                    '500': '#00cca3',
+                    '600': '#00b38f',
+                    '700': '#00997a',
+                    '800': '#008066',
+                    '900': '#006652',
+                    'A100': '#66ffe0',
+                    'A200': '#80ffe5',
+                    'A400': '#99ffeb',
+                    'A700': '#004d3d',
+                    'contrastDefaultColor': 'light'
+                });
+
+
+                $mdThemingProvider.theme('default')
+                        .primaryPalette('amazingPaletteName');
+            })
+            .factory('mod',function () {
         var user = null;
         var supporter = null;
         var setUser = function (username) {
@@ -369,9 +398,7 @@
                     else {
                         var date = new Date();
                         var today = date.getMonth()+1 + "/" + date.getDate() + "/" + date.getFullYear();
-                        console.log($dates);
                         var month = $scope.months[$upDate.display.split("-")[1]];
-                        console.log(month);
                         if(parseInt(month)==date.getMonth()+1){
                             for(i=0;i<$dates.length;i++){
                                 if(parseInt($dates[i].display)<date.getDate() && $dates[i].selectable!=false){
@@ -421,7 +448,7 @@
                 };
 
                 $scope.cancel = function () {
-                    modal.close;
+                    mod.close;
                 }
             });
 

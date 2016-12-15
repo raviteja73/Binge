@@ -10,11 +10,11 @@
             <md-tabs md-dynamic-height md-border-bottom>
                 <md-tab label="Upcoming">
                     <md-content layout="row" class="md-padding">
-                        <div flex="50">
-                            <md-radio-group ng-model="data.group3" >
+                        <div flex="50" data-ng-if="!message2">
+                            <md-radio-group ng-model="data" >
                                 <div data-ng-repeat="val in upcomingAppointments">
                                     <md-card layout-padding>
-                                        <md-radio-button ng-value="val._id">
+                                        <md-radio-button ng-model="sel" ng-value="val._id">
                                             <div><span><em>Date   </em></span><span>{{val.date}}</span></div>
                                             <div><span><em>Time   </em></span><span>{{val.time}}</span></div>
                                         </md-radio-button>
@@ -23,15 +23,13 @@
                             </md-radio-group>
                         </div>
                         <div flex="13" flex-offset="10">
-                            <div nf-if="completed" layout="column">
-                                <md-button class="md-primary md-raised" ng-click="editAppoint()">
+                            <div data-ng-if="!message2" layout="column">
+                                <md-button class="md-primary md-raised" ng-click="editAppoint(data)">
                                     EDIT
-                                </md-button>
-                                <md-button class="md-primary md-raised" ng-click="deleteAppoint()">
-                                    DELETE
                                 </md-button>
                             </div>
                         </div>
+                        <div data-ng-if="message2"><h4>{{message2}}</h4></div>
                     </md-content>
                 </md-tab>
                 <md-tab label="Completed">
@@ -45,10 +43,40 @@
                                 <md-divider></md-divider>
                             </md-list-item>
                         </md-card>
+                        <div data-ng-if="message1"><h4>{{message1}}</h4></div>
                     </md-content>
                 </md-tab>
             </md-tabs>
         </md-content>
     </div>
+
+    <script type="text/ng-template" id="edit.html">
+        <md-dialog flex="30">
+
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>Edit Appointment</h2>
+                </div>
+            </md-toolbar>
+            <form ng-cloak layout="column" action="/challenge/editChallenge" method="post" layout-padding>
+                <span flex></span>
+                <md-dialog-content flex="60">
+
+                </md-dialog-content>
+
+                <md-dialog-actions layout="row">
+                    <span flex></span>
+                    <md-button ng-click="cancel()">
+                        Cancel
+                    </md-button>
+
+                    <md-button type="submit">
+                        Update
+                    </md-button>
+                </md-dialog-actions>
+            </form>
+        </md-dialog>
+    </script>
+
 </body>
 </html>
